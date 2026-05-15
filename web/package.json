@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "cd ../calculator && npm install --no-audit --no-fund --silent",
     "prebuild": "tsx scripts/build-data.ts",
     "predev": "tsx scripts/build-data.ts",
     "dev": "next dev",
