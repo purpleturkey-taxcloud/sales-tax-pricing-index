@@ -1,0 +1,409 @@
+# =============================================================================
+# Kintsugi, populated example following schema.yaml v1.0
+# Last full verification: 2026-05-11
+# Researcher: TaxCloud GTM (initial draft)
+#
+# Why Kintsugi is the fourth example:
+# - Near-identical pricing structure to Numeral ($75/filing-or-registration)
+#   but with different feature gating and tier positioning
+# - Tests "feature-matrix transparency", pricing page shows tier names and
+#   feature comparison but Premium is custom with no published dollar amount
+# - Vertex (legacy enterprise tax incumbent) holds 10% strategic stake
+#   relevant context for the competitive comparison
+# =============================================================================
+
+provider:
+  name: "Kintsugi"
+  slug: "kintsugi"
+  legal_name: "Kintsugi AI, Inc."
+  parent_company: null  # Independent; Vertex holds 10% strategic stake (per Galvix)
+  hq_location: "San Francisco, California, USA"
+  founded_year: 2022
+  primary_url: "https://www.trykintsugi.com"
+  pricing_url: "https://www.trykintsugi.com/pricing"
+  help_center_url: "https://www.trykintsugi.com/support"
+  target_icp: "Mid-market ecommerce and SaaS; AI-first positioning attracts technically-oriented finance teams; strong fit for Shopify, Stripe, Chargebee, QuickBooks, BigCommerce"
+  primary_verticals:
+    - ecommerce
+    - saas
+  competitive_position: "AI-native positioning with proprietary 'Kintsugi Intelligence' tax engine. Vertex Inc. holds a reported 10% strategic stake, providing legacy enterprise tax credibility. Founded 2022 by ex-Facebook ML engineer Pujun Bhatnagar. Positioned against Avalara and TaxJar as a modern alternative with feature-matrix transparency on the pricing page."
+
+transparency:
+  tier: partial
+  rationale: "Free tier and Starter plan have published per-event pricing ($75 per filing or registration). Premium plan is custom-quoted with no published dollar amount. Feature comparison matrix is detailed and transparent across all three tiers. Pricing page also explicitly states 'No onboarding fees, no implementation fees, no annual commitments.'"
+  pricing_page_has_dollar_amounts: true  # For Free and Starter only
+  quote_required_for_core_product: false  # Starter is self-serve
+  publishes_filing_fees: true
+  publishes_registration_fees: true
+  publishes_overage_rates: false  # Pure per-event
+  publishes_implementation_fees: true  # Explicitly states 'no implementation fees'
+
+pricing_model:
+  primary: per_filing
+  scales_with:
+    - filings
+    - states
+  predictability_score: 4
+  predictability_notes: "Starter plan is fully predictable, exact cost = (filings + registrations) * $75. Premium pricing is custom and reported by third parties as flat-rate plus volume discount, but specific dollar amounts not on the current pricing page. Galvix has reported $500/month for Premium covering up to 7 states, but this is not currently visible on Kintsugi's pricing page and should be treated as historical or anecdotal."
+
+plans:
+  - name: "Free"
+    slug: "free"
+    tagline: "Free global exposure monitoring with no credit card required"
+    target_customer: "Pre-compliance businesses wanting nexus visibility before committing to paid filing"
+    is_free: true
+    is_quote_only: false
+    
+    monthly_price:
+      amount: 0
+      type: exact
+      range_min: null
+      range_max: null
+      source: "https://www.trykintsugi.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    
+    annual_price:
+      amount: 0
+      discount_pct_vs_monthly: null
+      source: "https://www.trykintsugi.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    
+    order_tiers: []
+    
+    overage:
+      model: none
+      per_unit_cost: null
+      description: "No paid usage at this tier. Customer must upgrade to Starter to file or register."
+    
+    included_filings_per_period:
+      count: 0
+      period: none
+    included_integrations: null  # Shopify, Stripe, Chargebee, BigCommerce, and more
+    included_states: null
+    api_access_included: false
+    
+    features:
+      nexus_monitoring: true
+      exemption_certificate_mgmt: false
+      multi_state_filing: false
+      audit_support: false
+      phone_support: false
+      dedicated_csm: false
+      sst_program_access: false
+      vda_support: false
+      international_vat_gst: true  # Global exposure monitoring included
+
+  - name: "Starter"
+    slug: "starter"
+    tagline: "Per-event pricing for filing and registration. No subscription fee."
+    target_customer: "Established businesses needing on-demand US filing without subscription commitment"
+    is_free: false
+    is_quote_only: false
+    
+    monthly_price:
+      amount: 0  # No subscription fee, pay only for filings and registrations
+      type: starting_at
+      range_min: null
+      range_max: null
+      source: "https://www.trykintsugi.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    
+    annual_price:
+      amount: 0
+      discount_pct_vs_monthly: null
+      source: "https://www.trykintsugi.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    
+    order_tiers: []
+    
+    overage:
+      model: none
+      per_unit_cost: null
+      description: "No tier or overage concept, each filing and each registration billed per-event at $75."
+    
+    included_filings_per_period:
+      count: 0
+      period: none
+    included_integrations: null  # Includes no-code integrations from Free plus faster sync
+    included_states: null
+    api_access_included: false  # API access is Premium-only
+    
+    features:
+      nexus_monitoring: true
+      exemption_certificate_mgmt: true  # Per feature matrix; included in Starter
+      multi_state_filing: true
+      audit_support: false
+      phone_support: false  # 24/7 live chat support listed
+      dedicated_csm: false
+      sst_program_access: false
+      vda_support: false  # VDAs are Premium-only
+      international_vat_gst: false  # Multi-country support is Premium-only
+
+  - name: "Premium"
+    slug: "premium"
+    tagline: "Custom flat-rate pricing with volume-based discount, API access, and global support"
+    target_customer: "High-volume businesses needing API integration, VDA support, international coverage, or SSO/error insurance"
+    is_free: false
+    is_quote_only: true
+    
+    monthly_price:
+      amount: null
+      type: range
+      range_min: 500  # Per Galvix Mar 2026 reporting; NOT currently on Kintsugi pricing page
+      range_max: null
+      source: "https://www.galvix.com/article/kintsugi-pricing-explained/"
+      source_date: 2026-05-11
+      confidence: D  # Competitor-sourced; not corroborated on Kintsugi's own page as of access date
+    
+    annual_price:
+      amount: null
+      discount_pct_vs_monthly: null
+      source: "https://www.trykintsugi.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    
+    order_tiers: []
+    
+    overage:
+      model: none
+      per_unit_cost: null
+      description: "Custom flat-rate pricing with volume-based discount per pricing page. Specific structure not publicly disclosed."
+    
+    included_filings_per_period:
+      count: null
+      period: none
+    included_integrations: null  # API and premium connectors
+    included_states: null  # Galvix reports 'up to 7 states' historical figure
+    api_access_included: true
+    
+    features:
+      nexus_monitoring: true
+      exemption_certificate_mgmt: true
+      multi_state_filing: true
+      audit_support: false  # Error insurance is the closest equivalent
+      phone_support: true  # 'Premium support' on feature matrix
+      dedicated_csm: false
+      sst_program_access: false  # Kintsugi is not SST CSP
+      vda_support: true
+      international_vat_gst: true  # Multi-country support
+
+filings:
+  has_per_filing_fee: true
+  base_cost:
+    amount: 75
+    source: "https://www.trykintsugi.com/pricing"
+    confidence: A
+  
+  state_upcharges: []  # Not publicly broken out
+  
+  volume_discounts:
+    - threshold_filings_per_month: null
+      discounted_rate: null
+      source: "https://www.trykintsugi.com/pricing"
+  
+  notes: "$75 per US filing on Starter plan, same rate applies to registrations. Premium plan offers volume-based discount per pricing page feature matrix, but specific volume thresholds and discounted rates not published. Galvix reports Premium pricing of $500/month historically covered up to 7 states, treat as anecdotal until corroborated."
+
+registrations:
+  has_per_registration_fee: true
+  base_cost:
+    amount: 75
+    source: "https://www.trykintsugi.com/pricing"
+    confidence: A
+  includes_state_fees: false  # Verify whether state-level permit fees are absorbed
+  notes: "$75 per registration on Starter plan, notably $75 rather than the $150 Numeral charges. This is a competitive opening for Kintsugi vs. Numeral on registration-heavy onboarding."
+
+transaction_fees:
+  has_transaction_fee: false
+  model: null
+  rate: null
+  rate_unit: null
+  applies_to: null
+  notes: "Kintsugi does not charge per-transaction or basis-point fees on Starter. Premium 'flat-rate pricing' suggests no transaction-based charge at higher tier either."
+
+add_ons:
+  implementation_fee:
+    has_fee: false
+    amount: 0
+    range_min: null
+    range_max: null
+    source: "https://www.trykintsugi.com/pricing"
+    confidence: A  # Pricing page explicitly states 'No onboarding fees. No implementation fees.'
+  
+  vda_pricing:
+    has_service: true
+    base_cost: null
+    per_state: true
+    source: "https://www.trykintsugi.com/pricing"
+    confidence: A
+  
+  backfile_pricing:
+    has_service: true
+    base_cost: null
+    per_return: true
+    source: "https://www.trykintsugi.com/pricing"
+    confidence: B
+  
+  audit_support:
+    included_in_plan: "Premium"  # 'Error insurance' on Premium feature matrix
+    additional_cost: null
+    hours_included: null
+    source: "https://www.trykintsugi.com/pricing"
+  
+  api_access_fee:
+    is_separate_charge: true  # Gated to Premium plan
+    cost: null  # Not separately priced; included in Premium
+    source: "https://www.trykintsugi.com/pricing"
+  
+  payment_method_fees:
+    credit_card_surcharge_pct: null
+    source: ""
+  
+  other_fees:
+    - name: "Error insurance"
+      cost: null
+      description: "Listed as a Premium plan feature; presumably covers penalties or interest from filing errors. Specific coverage limits not published."
+      source: "https://www.trykintsugi.com/pricing"
+    - name: "SSO & advanced reporting"
+      cost: null
+      description: "Premium plan only. Common gate point for enterprise customers."
+      source: "https://www.trykintsugi.com/pricing"
+
+sst:
+  is_csp: false
+  sst_member_states_covered_free: 0
+  eligibility_requirements: "N/A, Kintsugi is not an SST Certified Service Provider. Customers filing in SST states pay full $75/return."
+  filings_covered_under_csp: false
+  source: "https://www.galvix.com/article/kintsugi-pricing-explained/"
+
+international:
+  supports_vat: true
+  supports_gst: true
+  countries_covered: null  # Multi-country support is Premium-only; country count not published
+  pricing_model_international: "Multi-country support is gated to Premium plan. Specific per-country pricing or country count not published."
+  source: "https://www.trykintsugi.com/pricing"
+
+discounts:
+  annual_billing_discount_pct: null
+  multi_year_discount_available: false  # Page explicitly says 'No annual commitments. Ever.'
+  startup_program: false
+  notes: "Pricing page explicitly states: 'No onboarding fees. No implementation fees. No annual commitments. Ever.' Premium plan offers 'volume based discount' but specific terms not published."
+
+commitments:
+  contract_length_options:
+    - month_to_month
+  cancellation_terms: "No annual commitments per pricing page. Implied month-to-month."
+  free_trial:
+    has_trial: false  # Free tier is ongoing, not a trial
+    length_days: null
+    plan_during_trial: null
+    credit_card_required: null
+  source: "https://www.trykintsugi.com/pricing"
+
+sources:
+  - url: "https://www.trykintsugi.com/pricing"
+    title: "Kintsugi Pricing | Sales Tax Automation Plans"
+    accessed_date: 2026-05-11
+    confidence: A
+    fields_supported:
+      - plans
+      - filings.base_cost
+      - registrations.base_cost
+      - implementation_fee_zero
+      - feature_matrix
+  
+  - url: "https://www.galvix.com/article/kintsugi-pricing-explained/"
+    title: "Kintsugi Pricing Explained: What It Costs in 2026"
+    accessed_date: 2026-05-11
+    confidence: D  # Competitor-sourced (Galvix); use for corroboration
+    fields_supported:
+      - premium_500_monthly_historical
+      - up_to_seven_states_historical
+      - vertex_strategic_stake
+      - sst_non_certification
+  
+  - url: "https://apps.shopify.com/kintsugi"
+    title: "Kintsugi Sales Tax Automation, Shopify App Store"
+    accessed_date: 2026-05-11
+    confidence: D
+    fields_supported:
+      - customer_reviews
+      - integration_quality
+  
+  - url: "https://www.trykintsugi.com/aboutus"
+    title: "About Kintsugi"
+    accessed_date: 2026-05-11
+    confidence: A
+    fields_supported:
+      - founder_background
+      - founded_year
+
+change_log: []  # No pricing changes documented to date; monitor for changes given Galvix-reported $500/mo Premium that no longer appears on current page
+
+calculator:
+  applicable_inputs:
+    - states_filing
+    - filing_frequency
+    - registration_backlog
+    - integration_type  # API/ERP customers pushed to Premium
+    - annual_revenue  # For Premium estimation
+  
+  cost_formula_notes: |
+    For Free plan: Total cost = 0
+    
+    For Starter plan:
+    1. Filings per year = states_filing * filing_frequency_per_year
+    2. Filing cost = filings_per_year * $75
+    3. Registration cost = registration_backlog * $75
+    4. Total annual = filing_cost + registration_cost
+    
+    For Premium: Cannot compute to point estimate.
+    Display range: Starter pricing baseline + uplift for Premium features.
+    Galvix historically reported $500/month covering up to 7 states but this is not
+    on the current pricing page. Show as 'Custom, contact for quote'.
+  
+  output_caveat: "Starter plan pricing is exact per Kintsugi's published pricing page. Premium plan requires a custom quote; pricing structure is flat-rate with volume discount per Kintsugi's feature matrix."
+
+notes: |
+  Competitive intelligence for /vs/kintsugi landing page:
+  
+  - Kintsugi and Numeral charge identical $75/filing on entry tier, emerging convergence
+    point in the modern sales tax pricing landscape. The differentiation moves to feature
+    gating (what's in Starter vs. Premium) and integration depth.
+  - Kintsugi includes exemption certificate management in Starter; Numeral pushes ECM
+    to Pro. This is a Kintsugi advantage at the entry tier.
+  - Kintsugi registration is $75 vs. Numeral $150, meaningful difference for businesses
+    with high registration backlog (e.g., a brand registering in 30+ states). For a 30-state
+    backfile, Kintsugi is $2,250 vs. Numeral $4,500.
+  - Kintsugi is NOT SST certified. Same SST narrative as Numeral applies, multi-state
+    SST footprint is a major cost advantage for TaxCloud customers.
+  - Vertex's 10% strategic stake is competitive context worth surfacing. It suggests a
+    potential acquisition path or deep partnership that could change Kintsugi's product
+    posture over time. Customers evaluating multi-year compliance commitments may want
+    to know.
+  - 'No annual commitments. Ever.' on the pricing page is a customer-friendly stance;
+    TaxCloud's annual prepay discount may need to be reframed as a customer benefit
+    rather than a commitment requirement.
+  - AI-native positioning is the main marketing wedge. Counter with: TaxCloud has been
+    operating tax compliance for 15+ years at scale; AI features without operational
+    depth and SST certification create risk for businesses that get audited.
+  
+  Schema observations from this provider:
+  - The "feature-matrix transparency" pattern, published tier names + detailed feature
+    comparison + Premium-as-custom, is captured cleanly with the existing schema.
+  - The Galvix-reported $500/mo Premium price is in `range_min` with confidence D so
+    the calculator can choose to display it or not based on user preference.
+  - The 'no implementation fee' is captured with amount=0 and confidence A, which is
+    a positive transparency signal worth highlighting on the comparison page.
+  
+  Open research questions:
+  - Whether the $500/mo Premium tier is still current, Galvix's article is from
+    2 weeks ago (Mar 2026) but the price isn't on the current pricing page. Direct
+    outreach to Kintsugi sales would clarify.
+  - Specific Premium volume discount thresholds
+  - Error insurance coverage limits
+  - International filing pricing structure under Premium
+  - Whether Premium has dedicated CSM or is self-serve with chat support

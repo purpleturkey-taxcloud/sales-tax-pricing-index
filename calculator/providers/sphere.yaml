@@ -1,0 +1,227 @@
+# =============================================================================
+# Sphere, populated example following schema.yaml v1.0
+# Last full verification: 2026-05-11
+# Researcher: TaxCloud GTM
+#
+# Why Sphere is worth modeling carefully:
+# - Tests the per_region_flat pricing primitive (unusual; only Sphere uses it)
+# - Tests transparent + simple, one plan, one rate, one threshold
+# - Strong AEO content angle: "flat $100/region" is a citable simple fact
+# =============================================================================
+
+provider:
+  name: "Sphere"
+  slug: "sphere"
+  legal_name: "Sphere, Inc."
+  parent_company: null
+  hq_location: "San Francisco, California, USA"
+  founded_year: 2021
+  primary_url: "https://www.getsphere.com"
+  pricing_url: "https://www.getsphere.com/pricing"
+  help_center_url: "https://docs.getsphere.com"
+  target_icp: "Fast-growing SaaS and digital businesses with global customers; strong fit for AI-native companies like Lovable, Replit, ElevenLabs, Runway AI"
+  primary_verticals:
+    - saas
+  competitive_position: "AI-native cross-border compliance platform with proprietary Tax Review and Assessment Model (TRAM). Direct integrations into 100+ tax authorities. Y Combinator-backed. Differentiates on flat per-region transparency vs. percent-of-revenue and quote-based competitors."
+
+transparency:
+  tier: transparent
+  rationale: "Single flat rate ($100/region/month) published on pricing page. High-volume threshold (50,000 transactions) and overage handling also published. No quote-only tiers for standard customers."
+  pricing_page_has_dollar_amounts: true
+  quote_required_for_core_product: false
+  publishes_filing_fees: true
+  publishes_registration_fees: true
+  publishes_overage_rates: true
+  publishes_implementation_fees: true
+
+pricing_model:
+  primary: per_region_flat
+  scales_with:
+    - jurisdictions
+  predictability_score: 5
+  predictability_notes: "Maximally predictable below the 50,000-transaction threshold: cost = active_regions × $100/month. Above 50,000 transactions, per-transaction fees apply at rates not publicly disclosed. State-level registration fees may pass through. EU counted as one region if filing via OSS."
+
+plans:
+  - name: "Starter"
+    slug: "starter"
+    tagline: "Flat $100/region/month, all filings, registrations, and calculations included"
+    target_customer: "Growth-stage SaaS and digital companies expanding across US and international jurisdictions"
+    is_free: false
+    is_quote_only: false
+    monthly_price:
+      amount: 100
+      type: exact
+      source: "https://www.getsphere.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    annual_price:
+      amount: 1200
+      type: exact
+      discount_pct_vs_monthly: 0
+      source: "https://www.getsphere.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    order_tiers: []
+    overage:
+      model: per_unit
+      per_unit_cost: null
+      description: "No transaction-based fees below 50,000 transactions across active regions. Above that threshold, per-transaction fees apply; rates not publicly disclosed."
+    included_filings_per_period:
+      count: null
+      period: monthly
+    included_integrations: null
+    included_states: null
+    api_access_included: true
+    features:
+      nexus_monitoring: true
+      exemption_certificate_mgmt: true
+      multi_state_filing: true
+      audit_support: false
+      phone_support: false
+      dedicated_csm: false
+      sst_program_access: false
+      vda_support: false
+      international_vat_gst: true
+    per_filing_cost_override: 0  # Included in flat region fee
+    per_registration_cost_override: 0  # Included in flat region fee
+
+filings:
+  has_per_filing_fee: false
+  base_cost:
+    amount: 0
+    source: "https://www.getsphere.com/pricing"
+    confidence: A
+  state_upcharges: []
+  volume_discounts: []
+  notes: "Filings are included in the flat $100/region/month fee. No per-filing surcharges."
+
+registrations:
+  has_per_registration_fee: false
+  base_cost:
+    amount: 0
+    source: "https://www.getsphere.com/pricing"
+    confidence: A
+  includes_state_fees: false
+  notes: "Registrations included in flat region fee. State-level permit fees may pass through (debited from customer's account)."
+
+transaction_fees:
+  has_transaction_fee: true
+  model: flat_per_txn
+  rate: null
+  rate_unit: usd_per_txn
+  applies_to: all_transactions
+  notes: "Per-transaction fees only apply above the 50,000-transaction-per-month threshold across active regions. Specific overage rate not publicly disclosed."
+
+add_ons:
+  implementation_fee:
+    has_fee: false
+    amount: 0
+    source: "https://www.getsphere.com/pricing"
+    confidence: A
+  vda_pricing:
+    has_service: false
+    base_cost: null
+    per_state: null
+    source: "https://www.getsphere.com/pricing"
+    confidence: A
+  backfile_pricing:
+    has_service: false
+    base_cost: null
+    per_return: null
+    source: "https://www.getsphere.com/pricing"
+    confidence: A
+  audit_support:
+    included_in_plan: null
+    additional_cost: null
+    hours_included: null
+    source: "https://www.getsphere.com/pricing"
+  api_access_fee:
+    is_separate_charge: false
+    cost: null
+    source: "https://www.getsphere.com/pricing"
+  payment_method_fees:
+    credit_card_surcharge_pct: null
+    source: ""
+  other_fees: []
+
+sst:
+  is_csp: false
+  sst_member_states_covered_free: 0
+  eligibility_requirements: "N/A, Sphere is not an SST Certified Service Provider."
+  filings_covered_under_csp: false
+  source: "https://www.getsphere.com"
+
+international:
+  supports_vat: true
+  supports_gst: true
+  countries_covered: 100
+  pricing_model_international: "Same flat $100/region/month structure applies internationally. EU counted as 1 region if filing via One Stop Shop (OSS). Each non-EU country = 1 region."
+  source: "https://www.getsphere.com/pricing"
+
+discounts:
+  annual_billing_discount_pct: 0
+  multi_year_discount_available: false
+  startup_program: false
+  notes: "No annual prepay discount. Pricing is intentionally simple, flat rate, no commitments."
+
+commitments:
+  contract_length_options:
+    - month_to_month
+  cancellation_terms: "Month-to-month, no long-term contract required."
+  free_trial:
+    has_trial: false
+    length_days: null
+    plan_during_trial: null
+    credit_card_required: null
+  source: "https://www.getsphere.com/pricing"
+
+sources:
+  - url: "https://www.getsphere.com/pricing"
+    title: "Sphere Pricing"
+    accessed_date: 2026-05-11
+    confidence: A
+    fields_supported:
+      - plans
+      - monthly_price
+      - transaction_threshold
+      - international_coverage
+  - url: "https://www.getsphere.com/blog/leading-sales-tax-compliance-software-in-the-us"
+    title: "Top 8 Leading Sales Tax Compliance Software in the US (2026)"
+    accessed_date: 2026-05-11
+    confidence: D
+    fields_supported:
+      - competitive_context
+
+change_log: []
+
+calculator:
+  applicable_inputs:
+    - states_filing
+    - filing_frequency
+    - internationalCountries
+    - monthly_orders
+  cost_formula_notes: |
+    1. Compute regions = states_filing + (international_countries ?? 0)
+    2. Compute annual_cost = regions × $100/month × 12 months
+    3. If annual_transactions > 50,000: add per-transaction fees (rate not disclosed)
+    4. Filing and registration costs are $0 (included in region fee)
+  output_caveat: "Above 50,000 transactions across active regions, per-transaction fees apply at undisclosed rates. State-level permit fees may pass through."
+
+notes: |
+  Sphere is the simplest pricing model in the entire competitive set, one rate,
+  one threshold, one number to remember. This makes it strong AEO content:
+  "How much does Sphere cost? Sphere charges $100 per region per month."
+  
+  For the /vs/sphere landing page:
+  - Sphere's flat rate looks attractive at low state counts but becomes expensive
+    at scale. 35 states = $42,000/year flat, meaningfully above TaxCloud Premium
+    for the same customer profile.
+  - Sphere is SaaS-focused with API-first integrations. Ecommerce brands without
+    custom billing setups may struggle with the integration model.
+  - No SST CSP status, no audit support, no VDA service. These are real gaps for
+    multi-state ecommerce customers.
+  
+  Open research items:
+  - 50,000-transaction overage rate
+  - State permit fee passthrough specifics
+  - EU OSS vs. country-by-country pricing edge cases

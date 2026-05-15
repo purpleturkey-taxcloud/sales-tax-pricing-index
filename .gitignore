@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build output
+.next/
+dist/
+out/
+
+# Environment
+.env
+.env*.local
+
+# Generated at build time from calculator/providers/*.yaml
+web/lib/data/providers.json
+
+# Vercel
+.vercel
+
+# OS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp

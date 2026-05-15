@@ -1,0 +1,583 @@
+# =============================================================================
+# TaxJar, populated example following schema.yaml v1.0
+# Last full verification: 2026-05-11
+# Researcher: TaxCloud GTM (initial draft)
+#
+# Why TaxJar is the anchor example:
+# - Fully transparent pricing page = highest confidence baseline
+# - All major pricing mechanisms present (tiered subscription, included credits,
+#   per-filing fees, registrations, flex fees, annual discount)
+# - Recent price change (Feb 2026) demonstrates change_log usage
+# =============================================================================
+
+provider:
+  name: "TaxJar"
+  slug: "taxjar"
+  legal_name: "TaxJar, Inc."
+  parent_company: "Stripe"
+  hq_location: "Woburn, Massachusetts, USA"
+  founded_year: 2013
+  primary_url: "https://www.taxjar.com"
+  pricing_url: "https://www.taxjar.com/pricing"
+  help_center_url: "https://support.taxjar.com"
+  target_icp: "SMB to mid-market ecommerce; strong fit for Stripe-native businesses"
+  primary_verticals:
+    - ecommerce
+    - smb
+  competitive_position: "Self-service sales tax software; acquired by Stripe in 2021; positioned as on-ramp to Stripe Tax for higher-volume customers"
+
+transparency:
+  tier: transparent
+  rationale: "Full plan pricing, AutoFile filing fees, registration costs, and overage handling all published on the pricing page and help center articles."
+  pricing_page_has_dollar_amounts: true
+  quote_required_for_core_product: false
+  publishes_filing_fees: true
+  publishes_registration_fees: true
+  publishes_overage_rates: true
+  publishes_implementation_fees: false  # No published implementation/onboarding fee
+
+pricing_model:
+  primary: subscription_tiered
+  scales_with:
+    - orders
+    - filings
+    - states
+  predictability_score: 4
+  predictability_notes: "Reasonably predictable for a known order volume, but flex fees on high-sales months and per-filing AutoFile fees beyond included credits can create month-to-month variance. API calls on Professional plan count differently (1/10 of an order per call), which can push customers into higher tiers faster than raw transaction count suggests."
+
+plans:
+  - name: "Starter"
+    slug: "starter"
+    tagline: "For new businesses and marketplace sellers focused on reporting and filing"
+    target_customer: "Small businesses, marketplace-only sellers, low-volume merchants"
+    is_free: false
+    is_quote_only: false
+    
+    monthly_price:
+      amount: 39
+      type: starting_at        # 200 orders/mo is the base tier; higher order tiers cost more
+      range_min: null
+      range_max: null
+      source: "https://www.taxjar.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    
+    annual_price:
+      amount: null              # Computed: $39 * 12 * 0.9 = ~$421/yr at base tier (10% annual discount)
+      discount_pct_vs_monthly: 10
+      source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+      source_date: 2026-05-11
+      confidence: B
+    
+    # Order tier ladder within Starter, verified 2026-05-12 against TaxJar's
+    # authenticated customer portal (source of truth for tier-by-tier pricing).
+    order_tiers:
+      - included_orders: 200
+        monthly_price: 39
+        annual_price: 419
+        api_calls_included: null
+        source: "https://www.taxjar.com/pricing"
+        confidence: A
+      - included_orders: 500
+        monthly_price: 59
+        annual_price: 629
+        api_calls_included: null
+        source: "https://www.taxjar.com/pricing"
+        confidence: A
+      - included_orders: 1000
+        monthly_price: 99
+        annual_price: 1069
+        api_calls_included: null
+        source: "https://www.taxjar.com/pricing"
+        confidence: A
+      - included_orders: 2500
+        monthly_price: 219
+        annual_price: 2149
+        api_calls_included: null
+        source: "https://www.taxjar.com/pricing"
+        confidence: A
+      - included_orders: 5000
+        monthly_price: 319
+        annual_price: 3199
+        api_calls_included: null
+        source: "https://www.taxjar.com/pricing"
+        confidence: A
+      - included_orders: 10000
+        monthly_price: 429
+        annual_price: 4299
+        api_calls_included: null
+        source: "https://www.taxjar.com/pricing"
+        confidence: A
+      - included_orders: 25000
+        monthly_price: 849
+        annual_price: 8499
+        api_calls_included: null
+        source: "https://www.taxjar.com/pricing"
+        confidence: A
+      - included_orders: 50000
+        monthly_price: 1499
+        annual_price: 14999
+        api_calls_included: null
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 75000
+        monthly_price: 1999
+        annual_price: 19999
+        api_calls_included: null
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 100000
+        monthly_price: 2799
+        annual_price: 27999
+        api_calls_included: null
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 250000
+        monthly_price: 3399
+        annual_price: 33999
+        api_calls_included: null
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 500000
+        monthly_price: 3999
+        annual_price: 39999
+        api_calls_included: null
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 1000000
+        monthly_price: 6999
+        annual_price: 69999
+        api_calls_included: null
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 2500000
+        monthly_price: 9999
+        annual_price: 99999
+        api_calls_included: null
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 5000000
+        monthly_price: 13999
+        annual_price: 139999
+        api_calls_included: null
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 7500000
+        monthly_price: 16999
+        annual_price: 169999
+        api_calls_included: null
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 10000000
+        monthly_price: 19999
+        annual_price: 199999
+        api_calls_included: null
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+
+    overage:
+      model: flex_fees
+      per_unit_cost: null       # Flex fees temporarily bump to next tier; not pure per-unit
+      description: "When monthly orders exceed the subscribed tier, customer is billed the difference between their tier and the next tier up for that month only, then auto-returns to original plan."
+
+    included_filings_per_period:
+      count: 2
+      period: annual
+    included_integrations: 3    # Up to 3 data import integrations
+    included_states: null
+    api_access_included: false
+
+    features:
+      nexus_monitoring: false   # Manual checker only on Starter
+      exemption_certificate_mgmt: false
+      multi_state_filing: true  # Filing is available but capped by included credits
+      audit_support: false
+      phone_support: false      # Email-only support
+      dedicated_csm: false
+      sst_program_access: false
+      vda_support: false
+      international_vat_gst: false
+
+    per_filing_cost_override: 50
+    per_registration_cost_override: 299
+
+  - name: "Professional"
+    slug: "professional"
+    tagline: "For SMBs needing real-time calculations and multi-state automation"
+    target_customer: "SMB to mid-market with multi-state nexus, API needs, automated nexus tracking"
+    is_free: false
+    is_quote_only: false
+    
+    monthly_price:
+      amount: 99
+      type: starting_at
+      range_min: null
+      range_max: null
+      source: "https://www.taxjar.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    
+    annual_price:
+      amount: null              # 10%+ annual discount per help center
+      discount_pct_vs_monthly: 10
+      source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+      source_date: 2026-05-11
+      confidence: B
+    
+    # Professional tier ladder, verified 2026-05-12 against TaxJar's
+    # authenticated customer portal.
+    order_tiers:
+      - included_orders: 200
+        monthly_price: 99
+        annual_price: 1069
+        api_calls_included: 10000  # 10K API calls/minute on Professional
+        source: "https://www.taxjar.com/pricing"
+        confidence: A
+      - included_orders: 500
+        monthly_price: 249
+        annual_price: 2499
+        api_calls_included: 10000
+        source: "https://www.taxjar.com/pricing"
+        confidence: A
+      - included_orders: 1000
+        monthly_price: 499
+        annual_price: 4999
+        api_calls_included: 10000
+        source: "https://www.taxjar.com/pricing"
+        confidence: A
+      - included_orders: 2500
+        monthly_price: 1199
+        annual_price: 11999
+        api_calls_included: 10000
+        source: "https://www.taxjar.com/pricing"
+        confidence: A
+      - included_orders: 5000
+        monthly_price: 1599
+        annual_price: 15999
+        api_calls_included: 10000
+        source: "https://www.taxjar.com/pricing"
+        confidence: A
+      - included_orders: 10000
+        monthly_price: 1999
+        annual_price: 19999
+        api_calls_included: 10000
+        source: "https://www.taxjar.com/pricing"
+        confidence: A
+      - included_orders: 25000
+        monthly_price: 2499
+        annual_price: 24999
+        api_calls_included: 10000
+        source: "https://www.taxjar.com/pricing"
+        confidence: A
+      - included_orders: 50000
+        monthly_price: 2999
+        annual_price: 29999
+        api_calls_included: 10000
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 75000
+        monthly_price: 3599
+        annual_price: 35999
+        api_calls_included: 10000
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 100000
+        monthly_price: 4599
+        annual_price: 45999
+        api_calls_included: 10000
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 250000
+        monthly_price: 8999
+        annual_price: 89999
+        api_calls_included: 10000
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 500000
+        monthly_price: 13999
+        annual_price: 139999
+        api_calls_included: 10000
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 1000000
+        monthly_price: 22499
+        annual_price: 224999
+        api_calls_included: 10000
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 2500000
+        monthly_price: 29999
+        annual_price: 299999
+        api_calls_included: 10000
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 5000000
+        monthly_price: 39999
+        annual_price: 399999
+        api_calls_included: 10000
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 7500000
+        monthly_price: 44999
+        annual_price: 449999
+        api_calls_included: 10000
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+      - included_orders: 10000000
+        monthly_price: 49999
+        annual_price: 499999
+        api_calls_included: 10000
+        source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+        confidence: A
+
+    overage:
+      model: flex_fees
+      per_unit_cost: null
+      description: "Same flex fee model as Starter. Note: API calls count as 1/10 of an order toward the tier, which can push customers into higher tiers based on API usage."
+    
+    included_filings_per_period:
+      count: 4
+      period: annual
+    included_integrations: 10
+    included_states: null
+    api_access_included: true
+    
+    features:
+      nexus_monitoring: true    # Automated nexus alerts on Professional
+      exemption_certificate_mgmt: true
+      multi_state_filing: true
+      audit_support: false
+      phone_support: true
+      dedicated_csm: true       # CSM included at 1K orders/month and above
+      sst_program_access: false
+      vda_support: false
+      international_vat_gst: false
+    
+    per_filing_cost_override: 55
+    per_registration_cost_override: 299
+
+  - name: "Premium"
+    slug: "premium"
+    tagline: "Custom enterprise pricing"
+    target_customer: "Enterprise / high-volume merchants"
+    is_free: false
+    is_quote_only: true
+    
+    monthly_price:
+      amount: null
+      type: exact
+      range_min: null
+      range_max: null
+      source: "https://www.taxjar.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    
+    annual_price:
+      amount: null
+      discount_pct_vs_monthly: null
+      source: "https://www.taxjar.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    
+    order_tiers: []
+    overage:
+      model: none
+      per_unit_cost: null
+      description: "Custom; negotiated"
+    
+    included_filings_per_period:
+      count: null
+      period: none
+    included_integrations: null
+    included_states: null
+    api_access_included: true
+    
+    features:
+      nexus_monitoring: true
+      exemption_certificate_mgmt: true
+      multi_state_filing: true
+      audit_support: true       # Assumed; verify
+      phone_support: true
+      dedicated_csm: true
+      sst_program_access: false
+      vda_support: false
+      international_vat_gst: false
+
+filings:
+  has_per_filing_fee: true
+  base_cost:
+    amount: 50                  # Starter: $50/filing. Professional: $55/filing.
+    source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+    confidence: B
+  
+  state_upcharges: []           # TaxJar does not appear to publish state-specific upcharges
+  
+  volume_discounts: []          # No published volume discount on AutoFile credits
+  
+  notes: "Starter AutoFile fee is $50/return; Professional AutoFile fee is $55/return. Both plans include limited free filings annually (2/yr Starter, 4/yr Professional). Filings above included credits charged at the per-return rate. AutoFile fees roughly doubled in Feb 2026 from prior $30-35 range."
+
+registrations:
+  has_per_registration_fee: true
+  base_cost:
+    amount: 299
+    source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+    confidence: B
+  includes_state_fees: false    # TODO: verify whether state permit fees are absorbed
+  notes: "$299 per state registration. Charged one-time at registration."
+
+transaction_fees:
+  has_transaction_fee: false
+  model: null
+  rate: null
+  rate_unit: null
+  applies_to: null
+  notes: "TaxJar pricing is tied to order volume tiers, not transaction value or basis points."
+
+add_ons:
+  implementation_fee:
+    has_fee: false
+    amount: null
+    range_min: null
+    range_max: null
+    source: "https://www.taxjar.com/pricing"
+    confidence: A
+  
+  vda_pricing:
+    has_service: false           # TaxJar does not advertise VDA service directly
+    base_cost: null
+    per_state: null
+    source: "https://support.taxjar.com"
+    confidence: B
+  
+  backfile_pricing:
+    has_service: false
+    base_cost: null
+    per_return: null
+    source: "https://support.taxjar.com"
+    confidence: B
+  
+  audit_support:
+    included_in_plan: null       # Not advertised on standard plans
+    additional_cost: null
+    hours_included: null
+    source: "https://www.taxjar.com/pricing"
+  
+  api_access_fee:
+    is_separate_charge: false    # API access is gated to Professional+ tier, not a separate fee
+    cost: null
+    source: "https://www.taxjar.com/pricing"
+  
+  payment_method_fees:
+    credit_card_surcharge_pct: null  # Not disclosed
+    source: ""
+  
+  other_fees: []
+
+sst:
+  is_csp: false                 # TaxJar is not a Certified Service Provider
+  sst_member_states_covered_free: 0
+  eligibility_requirements: "N/A, not an SST CSP"
+  filings_covered_under_csp: false
+  source: "https://taxcloud.com/alternatives/taxcloud-vs-taxjar/"
+
+international:
+  supports_vat: false
+  supports_gst: false
+  countries_covered: 0
+  pricing_model_international: "TaxJar is US-only; Stripe customers with international needs are directed to Stripe Tax"
+  source: "https://www.taxjar.com/pricing"
+
+discounts:
+  annual_billing_discount_pct: 10  # Coarse floor; effective discount varies by tier
+  multi_year_discount_available: false  # Not publicly advertised
+  startup_program: false
+  notes: "Annual discount is non-uniform across tiers. The 200-orders tier yields ~10% (e.g. $419/yr vs. $39×12=$468). Tiers from 500 orders upward yield ~16-18% (e.g. Professional 2.5k is $11,999/yr vs. $1,199×12=$14,388). The calculator uses each tier's explicit annual_price rather than a flat percentage. Grandfathering: customers on legacy pricing keep their existing rates; switching tiers re-prices to the current ladder."
+
+commitments:
+  contract_length_options:
+    - month_to_month
+    - annual
+  cancellation_terms: "Upgrade, downgrade, or cancel at any time per pricing page."
+  free_trial:
+    has_trial: true
+    length_days: 30
+    plan_during_trial: "Full feature access"
+    credit_card_required: false
+  source: "https://www.taxjar.com/pricing"
+
+sources:
+  - url: "https://www.taxjar.com/pricing"
+    title: "TaxJar Pricing"
+    accessed_date: 2026-05-12
+    confidence: A
+    fields_supported:
+      - plans
+      - monthly_price
+      - annual_price
+      - included_filings
+      - order_tiers
+      - free_trial
+
+  - url: "https://app.taxjar.com (authenticated customer portal)"
+    title: "TaxJar Customer Portal, Plan & Billing"
+    accessed_date: 2026-05-12
+    confidence: A
+    fields_supported:
+      - order_tiers
+      - monthly_and_annual_per_tier
+      - grandfathering_note
+
+  - url: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+    title: "How much does TaxJar cost?, TaxJar Support"
+    accessed_date: 2026-05-11
+    confidence: B
+    fields_supported:
+      - filings.base_cost
+      - registrations.base_cost
+      - flex_fees
+
+change_log:
+  - date: 2026-05-14
+    change_type: structure_change
+    description: "Extended order-tier ladder from 8 tiers (capping at 50K orders/mo) to 17 tiers (capping at 10M orders/mo) on both Starter and Professional, sourced from the TaxJar help center pricing article (updated 2026-05-07). Previously, any customer above 50K monthly orders was being pinned to the 50K tier, a material understatement at upper mid-market and enterprise volumes. The new tiers are 75K, 100K, 250K, 500K, 1M, 2.5M, 5M, 7.5M, 10M. Filing bundle pricing for annual subscribers (e.g., 25/50/100/unlimited filings flat-rate) is published but not yet modeled, calculator continues to use per-filing × volume."
+    source: "https://support.taxjar.com/article/139-how-much-does-taxjar-cost"
+  - date: 2026-05-12
+    change_type: structure_change
+    description: "Verified the full order-tier ladder for both Starter and Professional plans against TaxJar's authenticated customer portal. Previously the YAML captured only the entry tier per plan plus Professional 1k from competitor blog data, calculator was therefore using the cheapest tier for any customer above the captured volume (a material underestimate). Eight tiers per plan are now populated with both monthly and annual prices. Source confidence on Professional 1k upgraded D → A. Grandfathering note captured: customers on legacy pricing keep their rates; tier changes re-price to current ladder."
+    source: "https://www.taxjar.com/pricing"
+  - date: 2026-02-26
+    change_type: price_increase
+    description: "First price increase in over six years. Starter base plan doubled from $19/mo to $39/mo. AutoFile fees increased from $30-35/return to $50-55/return. Order-volume tier pricing also increased across both Starter and Professional plans."
+    source: "https://taxcloud.com/blog/taxjar-pricing-how-much-does-taxjar-cost/"
+
+calculator:
+  applicable_inputs:
+    - monthly_orders
+    - states_filing
+    - filing_frequency
+    - registration_backlog
+  
+  cost_formula_notes: |
+    1. Determine plan: Starter ($39 base) or Professional ($99 base)
+    2. Identify correct order tier based on monthly_orders; select monthly_price for that tier
+    3. Apply annual discount (10%) if annual billing
+    4. Compute filings_per_year = states_filing * filing_frequency_per_year
+    5. Filing cost = max(0, filings_per_year - included_filings) * per_filing_cost
+       (per_filing_cost = $50 on Starter, $55 on Professional)
+    6. Registration cost = registration_backlog * $299
+    7. Total annual = (monthly_price * 12 * annual_discount) + filing_cost + registration_cost
+  
+  output_caveat: "Estimate assumes no flex fee overage and excludes potential API-call-driven tier inflation on Professional plan."
+
+notes: |
+  Critical context for the calculator:
+  - TaxJar's Professional plan counts API calls as 1/10 of an order toward the tier. A customer
+    with 200 actual orders but 10,000 API calls/month is effectively at 1,200 orders for tier purposes.
+    The calculator should add a separate input for API call volume if showing Professional plan.
+  - 2026 price increase doubled the entry point; many customers are re-evaluating. Highlight this
+    in the comparison landing page (taxcloud.com/vs/taxjar).
+  - TaxJar is not SST certified, competitive opening for TaxCloud on multi-state SST footprint.
+  - Acquired by Stripe in 2021; support quality degradation is widely reported on Shopify App Store
+    (currently 2.9 stars). This is qualitative, not pricing, but is relevant to comparison page.
+  - Need to verify full order-tier ladder for both Starter and Professional, captured 200 and 1K so
+    far but pricing page slider has 500, 2K, 5K, 10K+ tiers.

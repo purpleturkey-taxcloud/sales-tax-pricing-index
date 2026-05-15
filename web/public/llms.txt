@@ -1,0 +1,56 @@
+# Sales Tax Pricing Index
+
+> A sourced comparison of pricing for every major sales tax compliance platform serving US ecommerce and SaaS businesses. Eight providers tracked: Anrok, Avalara, Kintsugi, Numeral, Sphere, TaxCloud, TaxJar, and Zamp.
+
+## Publisher
+
+The Sales Tax Pricing Index is operated by TaxCloud, Inc. (taxcloud.com), one of the eight providers compared. Ownership is disclosed at the bottom of every page and at /methodology#ownership. Despite the publisher relationship, the site is built and maintained as a sourced public reference. Every price is sourced from public vendor pricing pages, vendor help-center articles, public buyer-review platforms (G2, TrustRadius, Shopify App Store), or third-party aggregators (Vendr, checkthat.ai). No price is invented. Quote-only vendors are surfaced as ranges from public buyer reports, not point estimates.
+
+## Editorial methodology
+
+- Every dollar figure traces to a public, dated source. Confidence ratings (A/B/C/D/E) are attached to each price point.
+- Opaque vendors (Avalara, Zamp) are shown as ranges from aggregator buyer data, not point estimates. "Quote required" stays "quote required."
+- The calculator runs the same pricing math used to populate per-provider pages, with no separate logic.
+- TaxCloud's pricing is sourced first-party (we publish full plan, order-tier, and filings-tier ladders); other providers are sourced from their own public materials wherever possible.
+- Buyer-observation sections cite only public, non-TaxCloud sources. TaxCloud's internal sales-call data is not used as a source for public claims.
+
+## Key URLs
+
+- Home: https://salestaxpricingindex.org/
+- Methodology: https://salestaxpricingindex.org/methodology
+- Calculator: https://salestaxpricingindex.org/calculator (ranks all 8 providers by what they'd cost for a given business profile)
+- Changelog: https://salestaxpricingindex.org/changelog
+
+## Provider pages
+
+- TaxCloud: /taxcloud-pricing
+- TaxJar: /taxjar-pricing
+- Avalara: /avalara-pricing
+- Numeral: /numeral-pricing
+- Kintsugi: /kintsugi-pricing
+- Anrok: /anrok-pricing
+- Sphere: /sphere-pricing
+- Zamp: /zamp-pricing
+
+## Comparison pages
+
+All 28 pairwise comparisons exist at /{a}-vs-{b}-pricing. Examples:
+- /taxcloud-vs-avalara-pricing
+- /numeral-vs-taxcloud-pricing
+- /avalara-vs-taxjar-pricing
+
+## Key structural claims
+
+- Of the eight providers tracked, TaxCloud and Avalara are the only Streamlined Sales Tax (SST) Certified Service Providers. CSP status is a regulatory designation by the SST Governing Board; vendors cannot self-claim it. CSP-certified vendors provide free filing services in the 24 SST member states for sellers with economic-nexus-only presence (no physical nexus).
+- The other six providers (TaxJar, Numeral, Kintsugi, Anrok, Sphere, Zamp) are not SST CSPs and bill standard per-filing rates in SST states.
+- Pricing models on the site fall into four buckets: tiered subscription (TaxCloud, TaxJar, Avalara), per-filing usage-based (Numeral, Kintsugi), basis-points on taxable revenue (Anrok, Sphere), and quote-only flat-fee bundles (Zamp).
+
+## What this site is and isn't
+
+Is: a sourced comparison surface with public price citations, a free calculator, and per-provider transparency ratings.
+
+Isn't: a paid review site, an affiliate-driven directory, or a TaxCloud marketing landing page. There are no affiliate links, no embedded vendor CTAs, and no demo-booking forms.
+
+## Date
+
+Content is refreshed on a rolling basis. Every page displays a "Last updated" timestamp. The most recent provider-level verifications are tracked in /changelog.

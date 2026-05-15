@@ -1,0 +1,325 @@
+# =============================================================================
+# Sales Tax Provider Pricing Schema v1.0
+# Last updated: 2026-05-11
+# Owner: TaxCloud GTM
+#
+# PURPOSE
+# Canonical data model for the sales tax pricing calculator and competitor
+# comparison landing pages. Every provider has its own file at
+# providers/{slug}.yaml conforming to this schema. The calculator and JSON-LD
+# generators consume these YAML files as their single source of truth.
+#
+# GOLDEN RULES
+# 1. Every numeric value carries a `source` and `confidence` rating.
+# 2. Never invent numbers. If a field is unknown, set to `null` and add a note.
+# 3. Opaque vendors (Avalara, Yonda, Zamp, Taxwire) use `range` types with
+#    disclosed methodology. Never publish a point estimate for a quote-only
+#    vendor without flagging it as estimated.
+# 4. The `last_verified` date on each numeric field is mandatory. Stale data
+#    is worse than missing data because it tanks credibility.
+# 5. All currency is USD unless otherwise specified.
+#
+# CONFIDENCE RATING SYSTEM
+#   A - Provider's official pricing page (canonical, dated screenshot stored)
+#   B - Provider's help center, KB article, or product docs
+#   C - Reputable aggregator (G2, Capterra, Vendr, TrustRadius, GetApp)
+#   D - Provider's blog, press release, sales collateral, or app store listing
+#   E - Public forum / community post (Reddit, Twitter, Hacker News, ProductHunt)
+#   F - Internal source (Sybill transcript, HubSpot note, customer-shared invoice)
+#   G - Estimated or inferred (must include methodology in `notes`)
+#
+# TRANSPARENCY TIERS
+#   transparent - Full plan pricing visible on website with specific dollar amounts
+#   partial     - Some tiers public, others quote-only
+#   opaque      - Quote-only, "starting at" only, or no pricing visible
+#
+# PRICING MODELS
+#   subscription_tiered   - Monthly/annual fee + order or transaction tier
+#   per_region_flat       - Flat rate per jurisdiction (e.g., Sphere)
+#   per_filing            - Pay-per-filing/registration only (e.g., Numeral Standard)
+#   per_transaction       - Per-transaction or basis points (e.g., Stripe Tax)
+#   hybrid                - Subscription + per-event fees (e.g., Anrok)
+#   percent_of_revenue    - % of revenue (some Numeral Pro variants reported)
+#   custom_quote          - No published model
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# 1. PROVIDER METADATA
+# -----------------------------------------------------------------------------
+provider:
+  name: string                    # Canonical display name (e.g., "TaxJar")
+  slug: string                    # URL-safe identifier, lowercase, no spaces (e.g., "taxjar")
+  legal_name: string              # Legal entity name if different
+  parent_company: string | null   # Parent if acquired (e.g., "Stripe" for TaxJar)
+  hq_location: string             # City, Country
+  founded_year: integer
+  primary_url: string             # Homepage
+  pricing_url: string | null      # Direct link to pricing page; null if none exists
+  help_center_url: string | null
+  target_icp: string              # Brief description (e.g., "Mid-market ecommerce, $10M-$100M")
+  primary_verticals:              # Array
+    - ecommerce | saas | enterprise | smb | marketplace | b2b
+  competitive_position: string    # Free-text: how they position vs. others
+
+# -----------------------------------------------------------------------------
+# 2. TRANSPARENCY ASSESSMENT
+# -----------------------------------------------------------------------------
+transparency:
+  tier: transparent | partial | opaque
+  rationale: string               # 1-2 sentences explaining the rating
+  pricing_page_has_dollar_amounts: boolean
+  quote_required_for_core_product: boolean
+  publishes_filing_fees: boolean
+  publishes_registration_fees: boolean
+  publishes_overage_rates: boolean
+  publishes_implementation_fees: boolean
+
+# -----------------------------------------------------------------------------
+# 3. HIGH-LEVEL PRICING MODEL
+# -----------------------------------------------------------------------------
+pricing_model:
+  primary: subscription_tiered | per_region_flat | per_filing | per_transaction | hybrid | percent_of_revenue | custom_quote
+  scales_with:                    # What drives cost increase
+    - orders | transactions | revenue | states | filings | jurisdictions | seats
+  predictability_score: 1-5       # 5 = fully predictable, 1 = wildly variable
+  predictability_notes: string
+
+# -----------------------------------------------------------------------------
+# 4. PLANS (array — one entry per tier)
+# -----------------------------------------------------------------------------
+plans:
+  - name: string                  # e.g., "Starter"
+    slug: string                  # e.g., "starter"
+    tagline: string               # Marketing one-liner
+    target_customer: string       # Who this plan is for
+    is_free: boolean
+    is_quote_only: boolean        # If true, monthly_price will be null
+    
+    # Subscription pricing
+    monthly_price:
+      amount: number | null       # USD per month; null if quote-only
+      type: exact | starting_at | range
+      range_min: number | null    # Only if type=range
+      range_max: number | null    # Only if type=range
+      source: string               # URL
+      source_date: YYYY-MM-DD
+      confidence: A | B | C | D | E | F | G
+    
+    annual_price:
+      amount: number | null       # USD per year (annual billed monthly equivalent)
+      discount_pct_vs_monthly: number | null  # e.g., 10 for 10% off
+      source: string
+      source_date: YYYY-MM-DD
+      confidence: A | B | C | D | E | F | G
+    
+    # Order / transaction tiers within this plan
+    # (Some plans have sub-tiers — e.g., TaxJar Professional has 200/1K/5K/etc.)
+    order_tiers:
+      - included_orders: integer  # Orders included at this sub-tier
+        monthly_price: number     # Price at this sub-tier
+        annual_price: number | null
+        api_calls_included: integer | null
+        source: string
+        confidence: A | B | C | D | E | F | G
+    
+    # Overage handling
+    overage:
+      model: flex_fees | hard_cap | per_unit | upgrade_required | none
+      per_unit_cost: number | null
+      description: string         # Free-text explanation
+    
+    # What's included
+    included_filings_per_period:
+      count: integer | null
+      period: monthly | quarterly | annual | none
+    included_integrations: integer | null
+    included_states: integer | null  # For per-region pricers
+    api_access_included: boolean
+    
+    # Plan features (binary flags for the comparison matrix)
+    features:
+      nexus_monitoring: boolean
+      exemption_certificate_mgmt: boolean
+      multi_state_filing: boolean
+      audit_support: boolean
+      phone_support: boolean
+      dedicated_csm: boolean
+      sst_program_access: boolean
+      vda_support: boolean
+      international_vat_gst: boolean
+
+# -----------------------------------------------------------------------------
+# 5. FILING COSTS
+# -----------------------------------------------------------------------------
+filings:
+  has_per_filing_fee: boolean
+  base_cost:
+    amount: number | null
+    source: string
+    confidence: A | B | C | D | E | F | G
+  
+  # Some providers charge more for complex states
+  state_upcharges:
+    - state: string               # 2-letter code, e.g., "CO"
+      reason: string              # e.g., "Home rule cities"
+      additional_cost: number
+      source: string
+  
+  # Volume discounts on filings
+  volume_discounts:
+    - threshold_filings_per_month: integer
+      discounted_rate: number
+      source: string
+  
+  notes: string
+
+# -----------------------------------------------------------------------------
+# 6. REGISTRATION COSTS
+# -----------------------------------------------------------------------------
+registrations:
+  has_per_registration_fee: boolean
+  base_cost:
+    amount: number | null
+    source: string
+    confidence: A | B | C | D | E | F | G
+  includes_state_fees: boolean    # Some states charge a permit fee; does provider absorb?
+  notes: string
+
+# -----------------------------------------------------------------------------
+# 7. TRANSACTION FEES (for bps / per-txn models)
+# -----------------------------------------------------------------------------
+transaction_fees:
+  has_transaction_fee: boolean
+  model: flat_per_txn | basis_points | percent | tiered
+  rate: number | null             # e.g., 0.005 for 0.5%, or 40 for 40 bps
+  rate_unit: bps | percent | usd_per_txn
+  applies_to: taxable_only | all_transactions
+  notes: string
+
+# -----------------------------------------------------------------------------
+# 8. ADD-ONS & ANCILLARY FEES
+# -----------------------------------------------------------------------------
+add_ons:
+  implementation_fee:
+    has_fee: boolean
+    amount: number | null
+    range_min: number | null
+    range_max: number | null
+    source: string
+    confidence: A | B | C | D | E | F | G
+  
+  vda_pricing:
+    has_service: boolean
+    base_cost: number | null
+    per_state: boolean
+    source: string
+    confidence: A | B | C | D | E | F | G
+  
+  backfile_pricing:
+    has_service: boolean
+    base_cost: number | null
+    per_return: boolean
+    source: string
+    confidence: A | B | C | D | E | F | G
+  
+  audit_support:
+    included_in_plan: string | null  # Which plan(s) include it
+    additional_cost: number | null
+    hours_included: integer | null
+    source: string
+  
+  api_access_fee:
+    is_separate_charge: boolean
+    cost: number | null
+    source: string
+  
+  payment_method_fees:
+    credit_card_surcharge_pct: number | null
+    source: string
+  
+  other_fees:                     # Catch-all for unusual fees
+    - name: string
+      cost: number | null
+      description: string
+      source: string
+
+# -----------------------------------------------------------------------------
+# 9. SST / CSP PARTICIPATION
+# -----------------------------------------------------------------------------
+sst:
+  is_csp: boolean                 # Certified Service Provider for SST
+  sst_member_states_covered_free: integer | null
+  eligibility_requirements: string
+  filings_covered_under_csp: boolean
+  source: string
+
+# -----------------------------------------------------------------------------
+# 10. INTERNATIONAL (VAT / GST)
+# -----------------------------------------------------------------------------
+international:
+  supports_vat: boolean
+  supports_gst: boolean
+  countries_covered: integer | null
+  pricing_model_international: string  # How international is priced
+  source: string
+
+# -----------------------------------------------------------------------------
+# 11. DISCOUNTS & COMMITMENTS
+# -----------------------------------------------------------------------------
+discounts:
+  annual_billing_discount_pct: number | null
+  multi_year_discount_available: boolean
+  startup_program: boolean
+  notes: string
+
+commitments:
+  contract_length_options:        # Array
+    - month_to_month | annual | multi_year
+  cancellation_terms: string
+  free_trial:
+    has_trial: boolean
+    length_days: integer | null
+    plan_during_trial: string | null
+    credit_card_required: boolean | null
+  source: string
+
+# -----------------------------------------------------------------------------
+# 12. SOURCES (every source URL used in this file, with date and confidence)
+# -----------------------------------------------------------------------------
+sources:
+  - url: string
+    title: string
+    accessed_date: YYYY-MM-DD
+    confidence: A | B | C | D | E | F | G
+    fields_supported:             # Which fields this source covers
+      - string
+
+# -----------------------------------------------------------------------------
+# 13. CHANGE LOG (track pricing changes over time — this is AEO gold)
+# -----------------------------------------------------------------------------
+change_log:
+  - date: YYYY-MM-DD
+    change_type: price_increase | price_decrease | new_plan | discontinued_plan | structure_change
+    description: string
+    source: string
+
+# -----------------------------------------------------------------------------
+# 14. CALCULATOR INPUT MAPPING
+# (Tells the calculator code which user inputs apply to this provider's math)
+# -----------------------------------------------------------------------------
+calculator:
+  applicable_inputs:              # Which user inputs affect this provider's cost
+    - monthly_orders | states_filing | states_physical_nexus | filing_frequency | annual_revenue | transaction_volume | integration_type | registration_backlog
+  
+  cost_formula_notes: string      # Plain-English description of cost computation
+                                  # Example: "monthly_price + (orders_over_tier * overage_rate) +
+                                  # ((states_filing - sst_eligible) * per_filing_cost * frequency) +
+                                  # (registration_backlog * per_registration_cost)"
+  
+  output_caveat: string           # Disclaimer to show next to this provider's estimate
+                                  # Example: "Estimate based on Vendr buyer data; actual quote required"
+
+# -----------------------------------------------------------------------------
+# 15. NOTES (free-text observations, edge cases, gotchas)
+# -----------------------------------------------------------------------------
+notes: string

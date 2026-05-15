@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-feature-settings: 'ss01', 'cv11';
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    @apply bg-paper text-ink font-sans;
+  }
+  h1, h2, h3, h4 {
+    @apply text-ink;
+  }
+  hr {
+    @apply border-rule;
+  }
+  a {
+    @apply text-accent hover:text-accent-hover transition-colors no-underline;
+  }
+  th {
+    @apply font-sans font-semibold text-ink text-left;
+  }
+}
+
+@layer utilities {
+  .rule-top {
+    @apply border-t border-rule;
+  }
+  .rule-bottom {
+    @apply border-b border-rule;
+  }
+  .small-caps {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+  }
+  .card {
+    @apply bg-paper-raised border border-rule rounded-lg shadow-card;
+  }
+  .card-hover {
+    @apply hover:shadow-card-hover hover:border-rule transition-all;
+  }
+}

@@ -1,0 +1,372 @@
+# =============================================================================
+# Zamp, populated example following schema.yaml v1.0
+# Last full verification: 2026-05-12
+# Researcher: TaxCloud GTM (initial draft)
+#
+# DATA POSTURE
+# Zamp publishes a Free tier in full detail. The two paid tiers (U.S. Plan and
+# Global Plan) are quote-only, no subscription dollar amounts published.
+# Range estimates below come from aggregator buyer data and third-party
+# comparison pages. Like Avalara, Zamp must be displayed as ranges, never
+# as a point estimate.
+#
+# COMPETITIVE NOTE
+# Zamp positions explicitly against per-event pricing models, their landing
+# page for Colorado/Alaska home-rule states attacks "per-city charges" as
+# unfair. Their value prop is predictable bundle pricing in exchange for a
+# higher (custom-quoted) subscription cost.
+# =============================================================================
+
+provider:
+  name: "Zamp"
+  slug: "zamp"
+  legal_name: "Zamp, Inc."
+  parent_company: null
+  hq_location: "United States"
+  founded_year: 2022
+  primary_url: "https://zamp.com"
+  pricing_url: "https://zamp.com/pricing"
+  help_center_url: "https://help.zamp.com"
+  target_icp: "Mid-market ecommerce and SaaS that want a fully managed (\"done-for-you\") sales tax service instead of self-serve software"
+  primary_verticals:
+    - ecommerce
+    - saas
+    - smb
+  competitive_position: "Managed sales tax service, Zamp's positioning is 'done-for-you' versus competitors' 'do-it-yourself.' Predictable bundle pricing with no per-transaction fees, no per-filing add-ons. Markets aggressively against Avalara's home-rule per-city billing in Colorado and Alaska. Includes a 'Zamp Commitment' covering customer penalties caused by Zamp calculation or filing errors."
+
+transparency:
+  tier: opaque
+  rationale: "Free tier fully published. U.S. Plan and Global Plan are quote-only, no subscription, filing, or registration dollar amounts visible on the pricing page. Zamp's stated rationale: 'flat per-state or per-filing pricing often hides risk.'"
+  pricing_page_has_dollar_amounts: false  # Only the Free tier is "complimentary"; no dollar amounts on paid plans
+  quote_required_for_core_product: true
+  publishes_filing_fees: false
+  publishes_registration_fees: false
+  publishes_overage_rates: false
+  publishes_implementation_fees: false
+
+pricing_model:
+  primary: custom_quote
+  scales_with:
+    - revenue
+    - transactions
+    - states
+    - jurisdictions
+  predictability_score: 3
+  predictability_notes: "Once a quote is signed, Zamp's bundle model is predictable, filings, registrations, notices, and support are included in the subscription with no per-event surcharges. Predictability score is 3 (not higher) because the initial quote opacity makes pre-purchase budgeting difficult, and renewal pricing behavior is undocumented."
+
+# -----------------------------------------------------------------------------
+# Plans
+#
+# SCHEMA NOTE: Zamp's two paid plans are quote-only with no published ranges.
+# Range estimates below come from aggregator buyer data and third-party
+# comparison commentary. Treat as confidence C/G and always display as ranges.
+# -----------------------------------------------------------------------------
+plans:
+  - name: "Free"
+    slug: "free"
+    tagline: "One-time nexus analysis, product taxability review, 30-minute expert consultation, API sandbox"
+    target_customer: "Teams assessing tax exposure before committing to a paid plan"
+    is_free: true
+    is_quote_only: false
+    monthly_price:
+      amount: 0
+      type: exact
+      source: "https://zamp.com/pricing"
+      source_date: 2026-05-12
+      confidence: A
+    annual_price:
+      amount: 0
+      type: exact
+      discount_pct_vs_monthly: 0
+      source: "https://zamp.com/pricing"
+      source_date: 2026-05-12
+      confidence: A
+    order_tiers: []
+    overage:
+      model: upgrade_required
+      description: "Free tier provides one-time analysis only. Ongoing filing or remittance requires the U.S. or Global plan."
+    included_filings_per_period:
+      count: 0
+      period: none
+    included_integrations: null
+    api_access_included: false  # Sandbox only, rate-limited, 30-day trial
+    features:
+      nexus_monitoring: true   # Via one-time analysis
+      exemption_certificate_mgmt: false
+      multi_state_filing: false
+      audit_support: false
+      phone_support: false
+      dedicated_csm: false
+      sst_program_access: false
+      vda_support: false
+      international_vat_gst: false
+
+  - name: "U.S. Plan"
+    slug: "us"
+    tagline: "Audit-ready compliance for scaling teams, bundled filings, registrations, and expert support"
+    target_customer: "Mid-market ecommerce and SaaS scaling their US footprint; want fully managed compliance"
+    is_free: false
+    is_quote_only: true
+    monthly_price:
+      amount: null
+      type: range
+      range_min: 199          # Reported entry point from aggregator commentary
+      range_max: 1500         # Estimated mid-market ceiling; verify with buyer data
+      source: "https://zamp.com/pricing"
+      source_date: 2026-05-12
+      confidence: C
+    annual_price:
+      amount: null
+      discount_pct_vs_monthly: null
+      source: "https://zamp.com/pricing"
+      source_date: 2026-05-12
+      confidence: C
+    order_tiers: []
+    overage:
+      model: none
+      description: "Bundle model; no per-event overage."
+    included_filings_per_period:
+      count: null
+      period: monthly
+    included_integrations: null
+    api_access_included: true
+    features:
+      nexus_monitoring: true
+      exemption_certificate_mgmt: true
+      multi_state_filing: true
+      audit_support: true
+      phone_support: true
+      dedicated_csm: true
+      sst_program_access: false  # Zamp is NOT an SST CSP per the SST Governing Board's list
+      vda_support: true
+      international_vat_gst: false
+
+  - name: "Global Plan"
+    slug: "global"
+    tagline: "Enterprise-grade global compliance, US sales tax plus international VAT/GST"
+    target_customer: "Mid-market to enterprise selling internationally; needs unified US + international compliance"
+    is_free: false
+    is_quote_only: true
+    monthly_price:
+      amount: null
+      type: range
+      range_min: 800
+      range_max: 3000
+      source: "https://zamp.com/pricing"
+      source_date: 2026-05-12
+      confidence: G  # Inferred; no public data points found for this tier
+    annual_price:
+      amount: null
+      discount_pct_vs_monthly: null
+      source: "https://zamp.com/pricing"
+      source_date: 2026-05-12
+      confidence: G
+    order_tiers: []
+    overage:
+      model: none
+      description: "Bundle model; no per-event overage."
+    included_filings_per_period:
+      count: null
+      period: monthly
+    included_integrations: null
+    api_access_included: true
+    features:
+      nexus_monitoring: true
+      exemption_certificate_mgmt: true
+      multi_state_filing: true
+      audit_support: true
+      phone_support: true
+      dedicated_csm: true
+      sst_program_access: false
+      vda_support: true
+      international_vat_gst: true
+
+filings:
+  has_per_filing_fee: false
+  base_cost:
+    amount: 0
+    source: "https://zamp.com/pricing"
+    confidence: A
+  state_upcharges: []
+  volume_discounts: []
+  notes: "No per-filing fees. Zamp's positioning explicitly attacks per-filing pricing as 'hiding risk.' All filings (including Colorado and Alaska home-rule jurisdictions) are bundled into the subscription with no per-state or per-city surcharge."
+
+registrations:
+  has_per_registration_fee: false
+  base_cost:
+    amount: 0
+    source: "https://zamp.com/pricing"
+    confidence: A
+  includes_state_fees: false
+  notes: "Registrations included in subscription. State permit fees may pass through (not Zamp's fee)."
+
+transaction_fees:
+  has_transaction_fee: false
+  model: null
+  rate: null
+  rate_unit: null
+  applies_to: null
+  notes: "Zamp's published positioning: no per-transaction fees. All cost is in the subscription bundle."
+
+add_ons:
+  implementation_fee:
+    has_fee: false
+    amount: null
+    range_min: null
+    range_max: null
+    source: "https://zamp.com/pricing"
+    confidence: B
+  vda_pricing:
+    has_service: true
+    base_cost: null
+    per_state: false
+    source: "https://zamp.com/pricing"
+    confidence: B
+  backfile_pricing:
+    has_service: true
+    base_cost: null
+    per_return: false
+    source: "https://zamp.com/pricing"
+    confidence: B
+  audit_support:
+    included_in_plan: "U.S. Plan"
+    additional_cost: null
+    hours_included: null
+    source: "https://zamp.com/pricing"
+  api_access_fee:
+    is_separate_charge: false
+    cost: null
+    source: "https://zamp.com/pricing"
+  payment_method_fees:
+    credit_card_surcharge_pct: null
+    source: ""
+  other_fees:
+    - name: "Zamp Commitment"
+      cost: 0
+      description: "Zamp covers customer-incurred penalties or interest resulting from Zamp calculation or filing errors. No additional charge; included in the subscription."
+      source: "https://zamp.com/pricing"
+
+sst:
+  is_csp: false
+  sst_member_states_covered_free: 0
+  eligibility_requirements: "N/A, Zamp is not a Certified Service Provider in the Streamlined Sales Tax (SST) Program. The SST Governing Board's official CSP list as of May 2026 includes Avalara, TaxCloud, Sovos, AccurateTax, and Avior."
+  filings_covered_under_csp: false
+  source: "https://www.streamlinedsalestax.org/certified-service-providers/certified-service-providers-list"
+
+international:
+  supports_vat: true
+  supports_gst: true
+  countries_covered: 70  # Per Zamp's pricing page positioning
+  pricing_model_international: "International coverage included on the Global plan only. U.S. Plan customers must upgrade to add international jurisdictions."
+  source: "https://zamp.com/pricing"
+
+discounts:
+  annual_billing_discount_pct: null
+  multi_year_discount_available: false
+  startup_program: false
+  notes: "No published annual prepay discount. Bundle pricing is custom-quoted per customer; renewal pricing behavior is undocumented."
+
+commitments:
+  contract_length_options:
+    - annual
+  cancellation_terms: "Not publicly disclosed. Typical SaaS terms assumed."
+  free_trial:
+    has_trial: false
+    length_days: null
+    plan_during_trial: null
+    credit_card_required: null
+  source: "https://zamp.com/pricing"
+
+sources:
+  - url: "https://zamp.com/pricing"
+    title: "Zamp Pricing"
+    accessed_date: 2026-05-12
+    confidence: A
+    fields_supported:
+      - plans
+      - free_tier_details
+      - bundle_positioning
+      - international_coverage
+      - zamp_commitment
+
+  - url: "https://www.streamlinedsalestax.org/certified-service-providers/certified-service-providers-list"
+    title: "Certified Service Providers List, Streamlined Sales Tax Governing Board"
+    accessed_date: 2026-05-12
+    confidence: A
+    fields_supported:
+      - sst_csp_status
+
+  - url: "https://zamp.com/co-ak/"
+    title: "Tired of Paying for Every Home Rule City Filing?, Zamp"
+    accessed_date: 2026-05-12
+    confidence: A
+    fields_supported:
+      - colorado_alaska_home_rule_handling
+      - competitive_position_vs_per_event_pricing
+
+  - url: "https://www.numeral.com/blog/taxjar-vs-zamp"
+    title: "TaxJar vs. Zamp: Pricing, Features, & More, Numeral"
+    accessed_date: 2026-05-12
+    confidence: C
+    fields_supported:
+      - entry_tier_estimate
+      - managed_service_positioning
+
+  - url: "https://www.g2.com/products/zamp/reviews"
+    title: "Zamp Reviews 2026, G2"
+    accessed_date: 2026-05-12
+    confidence: C
+    fields_supported:
+      - buyer_sentiment
+      - pricing_perception
+
+change_log:
+  - date: 2026-05-12
+    change_type: new_plan
+    description: "Initial addition of Zamp to the tracked provider set. Free tier captured from Zamp's published pricing page (confidence A). U.S. Plan and Global Plan ranges estimated from aggregator commentary and third-party comparison pages, neither tier has published dollar amounts on Zamp's site."
+    source: "https://zamp.com/pricing"
+
+calculator:
+  applicable_inputs:
+    - annual_revenue
+    - monthlyTransactionVolumeUSD
+    - statesFiling
+    - requiresInternationalVatGst
+  cost_formula_notes: |
+    1. If requiresInternationalVatGst: pick Global Plan; else U.S. Plan.
+    2. Return a range, never a point estimate (Zamp is opaque per-tier).
+    3. Within plan, scale range bounds by buyer segment (revenue + state footprint):
+       - startup (<$1M revenue, <5 states): range floor
+       - smb ($1M-$10M, 5-15 states): mid-low
+       - mid_market ($10M-$50M, 15-30 states): mid-high
+       - enterprise ($50M+, 30+ states): range ceiling
+    4. Free tier is only returned if the user explicitly indicates they're
+       still in the nexus-assessment phase (not modeled in current calculator).
+  output_caveat: "Zamp does not publish dollar pricing for the U.S. or Global plans. Ranges are inferred from aggregator buyer commentary and third-party comparison pages. Actual quote will depend on state footprint, transaction volume, integration complexity, and negotiation. Bundle includes filings, registrations, and notice handling at no additional charge."
+
+notes: |
+  Zamp is the youngest provider in the tracked set (founded 2022). Their
+  go-to-market is explicit: managed service ("done-for-you") at premium
+  bundle pricing, attacking per-event pricing models on positioning. The
+  Colorado/Alaska home-rule landing page is the clearest expression of this.
+
+  For the /vs/zamp landing pages:
+  - vs. Avalara: Zamp's strongest pitch, predictable bundle vs. per-event
+    pricing, with the home-rule contrast as the wedge.
+  - vs. TaxCloud: ICP overlap (both serve mid-market ecommerce). TaxCloud
+    differentiates on SST CSP status (free filings in 24 states for eligible
+    customers); Zamp differentiates on done-for-you service model.
+  - vs. Numeral / Kintsugi: similar managed-service tier; comparison is
+    mostly about price transparency (Numeral publishes Standard, Zamp does
+    not publish any paid tier).
+  - vs. TaxJar: TaxJar is self-service software at $39+/mo; Zamp is managed
+    service starting at ~$199/mo. Different product categories.
+
+  Open research items:
+  - Confirm specific entry-tier price for U.S. Plan. $199/mo is reported by
+    multiple aggregators but not directly cited by Zamp.
+  - Capture mid-market and enterprise pricing ranges from G2 buyer reports
+    (full text, requires G2 review access via the G2 MCP).
+  - Verify renewal behavior, is the bundle price held flat year-over-year,
+    or does it scale with revenue/volume growth?
+  - Document specific countries covered on the Global plan.

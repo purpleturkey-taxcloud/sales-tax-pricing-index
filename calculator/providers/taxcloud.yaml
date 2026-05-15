@@ -1,0 +1,459 @@
+# =============================================================================
+# TaxCloud, populated example following schema.yaml v1.0
+# Last full verification: 2026-05-11
+# Researcher: TaxCloud GTM (first-party)
+# =============================================================================
+
+provider:
+  name: "TaxCloud"
+  slug: "taxcloud"
+  legal_name: "TaxCloud, Inc."
+  parent_company: "Camber Partners"
+  hq_location: "Norwalk, Connecticut, USA"
+  founded_year: 2008
+  primary_url: "https://taxcloud.com"
+  pricing_url: "https://taxcloud.com/taxcloud-pricing/"
+  help_center_url: "https://support.taxcloud.com"
+  target_icp: "Mid-market ecommerce, $10M–$100M in revenue. Especially fit for Shopify Plus, BigCommerce, WooCommerce, and Adobe Commerce merchants whose multi-state filing footprint is growing. Pricing structure scales predictably with order volume and filing count, designed so compliance cost grows with the business, not against it."
+  primary_verticals:
+    - ecommerce
+    - smb
+  competitive_position: "Mid-market sales tax platform built for ecommerce brands at $10M–$100M in revenue, especially Shopify Plus. Tiered subscription pricing scales with annual order volume; tiered filing pricing scales with annual filing count, both published, both predictable. Certified Service Provider in the Streamlined Sales Tax Program (one of six), so eligible customers pay nothing for filings in up to 24 SST member states. 15+ years operating tax compliance at scale. Acquired Ziptax (API-first rates product) in July 2025."
+
+transparency:
+  tier: transparent
+  rationale: "Full plan pricing, filing fees, free trial, and free plan all published on pricing page. SST CSP benefits documented in help center. No quote-only pricing for core platform."
+  pricing_page_has_dollar_amounts: true
+  quote_required_for_core_product: false
+  publishes_filing_fees: true
+  publishes_registration_fees: true
+  publishes_overage_rates: true
+  publishes_implementation_fees: true
+
+pricing_model:
+  primary: subscription_tiered
+  scales_with:
+    - orders
+    - filings
+    - states
+  predictability_score: 5
+  predictability_notes: "Highly predictable. Subscription based on order tier; per-filing fees published with volume discounts toward $20. SST free filings further reduce cost in member states for eligible Premium customers. Credit card payment adds a 7% convenience fee, ACH preferred."
+
+plans:
+  - name: "Free"
+    slug: "free"
+    tagline: "Single-state monitoring and home-state filing for small or new businesses"
+    target_customer: "New or small businesses needing nexus monitoring and home-state filing only"
+    is_free: true
+    is_quote_only: false
+    monthly_price:
+      amount: 0
+      type: exact
+      source: "https://taxcloud.com/taxcloud-pricing/"
+      source_date: 2026-05-11
+      confidence: A
+    annual_price:
+      amount: 0
+      type: exact
+      discount_pct_vs_monthly: 0
+      source: "https://taxcloud.com/taxcloud-pricing/"
+      source_date: 2026-05-11
+      confidence: A
+    order_tiers: []
+    overage:
+      model: upgrade_required
+      description: "Free plan supports home-state filing only. Multi-state filing requires Starter or Premium."
+    included_filings_per_period:
+      count: null
+      period: none
+    included_integrations: 1
+    api_access_included: false
+    features:
+      nexus_monitoring: true
+      exemption_certificate_mgmt: false
+      multi_state_filing: false
+      audit_support: false
+      phone_support: false
+      dedicated_csm: false
+      sst_program_access: false
+      vda_support: false
+      international_vat_gst: false
+
+  - name: "Starter"
+    slug: "starter"
+    tagline: "Multi-state filing for marketplace sellers and growing ecommerce brands. Same tiered pricing model as Premium, cost scales with order volume."
+    target_customer: "Ecommerce brands scaling into multi-state compliance without needing real-time API. SST CSP credit available, filings in SST member states (where you have economic nexus only) are free."
+    is_free: false
+    is_quote_only: false
+    monthly_price:
+      amount: 19
+      type: starting_at
+      source: "https://taxcloud.com/taxcloud-pricing/"
+      source_date: 2026-05-12
+      confidence: A
+    annual_price:
+      amount: 199
+      type: starting_at
+      discount_pct_vs_monthly: 16
+      source: "https://taxcloud.com/taxcloud-pricing/"
+      source_date: 2026-05-12
+      confidence: A
+    # Full Starter order-tier ladder, verified 2026-05-12 from internal
+    # subscription pricing table. annual_price is authoritative; monthly_price
+    # is the published monthly rate (derived to imply ~16% annual discount).
+    order_tiers:
+      - included_orders: 100
+        monthly_price: 19
+        annual_price: 199
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+      - included_orders: 200
+        monthly_price: 30
+        annual_price: 299
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+      - included_orders: 400
+        monthly_price: 50
+        annual_price: 499
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+      - included_orders: 1000
+        monthly_price: 89
+        annual_price: 899
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+      - included_orders: 2000
+        monthly_price: 129
+        annual_price: 1299
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+      - included_orders: 4000
+        monthly_price: 178
+        annual_price: 1799
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+      - included_orders: 10000
+        monthly_price: 248
+        annual_price: 2499
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+      - included_orders: 20000
+        monthly_price: 347
+        annual_price: 3499
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+      - included_orders: 40000
+        monthly_price: 625
+        annual_price: 6299
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+    overage:
+      model: per_unit
+      description: "Orders exceeding tier billed at the tier's per-order price. SST member state orders do not count toward allotment for SST-enrolled Starter customers with no physical nexus in those states."
+    included_filings_per_period:
+      count: null
+      period: none
+    included_integrations: 3
+    api_access_included: false
+    features:
+      nexus_monitoring: true
+      exemption_certificate_mgmt: true
+      multi_state_filing: true
+      audit_support: false
+      phone_support: false
+      dedicated_csm: false
+      sst_program_access: true  # SST CSP free-filing credit available on Starter as well
+      vda_support: false
+      international_vat_gst: false
+
+  - name: "Premium"
+    slug: "premium"
+    tagline: "Built for mid-market ecommerce ($10M–$100M), real-time API, nationwide filing, full SST CSP benefits, audit support. Pricing scales with order volume and filing count, not contract negotiation."
+    target_customer: "Mid-market ecommerce brands at $10M–$100M in revenue, especially Shopify Plus. Designed to scale through state expansion and order growth, tier pricing on both subscription and filings means cost grows predictably, not in step changes that punish growth."
+    is_free: false
+    is_quote_only: false
+    monthly_price:
+      amount: 79
+      type: starting_at
+      source: "https://taxcloud.com/taxcloud-pricing/"
+      source_date: 2026-05-12
+      confidence: A
+    annual_price:
+      amount: 799
+      type: starting_at
+      discount_pct_vs_monthly: 16
+      source: "https://taxcloud.com/taxcloud-pricing/"
+      source_date: 2026-05-12
+      confidence: A
+    # Full Premium order-tier ladder, verified 2026-05-12 from internal
+    # subscription pricing table. Note: the 100-orders and 200-orders tiers
+    # share the $799 annual entry rate (Premium effectively starts at 200/mo).
+    order_tiers:
+      - included_orders: 100
+        monthly_price: 79
+        annual_price: 799
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+      - included_orders: 200
+        monthly_price: 79
+        annual_price: 799
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+      - included_orders: 400
+        monthly_price: 149
+        annual_price: 1499
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+      - included_orders: 1000
+        monthly_price: 298
+        annual_price: 2999
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+      - included_orders: 2000
+        monthly_price: 397
+        annual_price: 3999
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+      - included_orders: 4000
+        monthly_price: 546
+        annual_price: 5499
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+      - included_orders: 10000
+        monthly_price: 744
+        annual_price: 7499
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+      - included_orders: 20000
+        monthly_price: 992
+        annual_price: 9999
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+      - included_orders: 40000
+        monthly_price: 1290
+        annual_price: 12999
+        source: "https://taxcloud.com/taxcloud-pricing/"
+        confidence: A
+    overage:
+      model: per_unit
+      description: "Same per-order overage model as Starter. SST member state orders excluded from allotment for eligible customers (Premium enrolled in SST, no physical nexus in those states)."
+    included_filings_per_period:
+      count: null
+      period: none
+    included_integrations: null
+    api_access_included: true
+    features:
+      nexus_monitoring: true
+      exemption_certificate_mgmt: true
+      multi_state_filing: true
+      audit_support: true
+      phone_support: true
+      dedicated_csm: false
+      sst_program_access: true
+      vda_support: true
+      international_vat_gst: false
+
+filings:
+  has_per_filing_fee: true
+  base_cost:
+    amount: 39
+    source: "https://support.taxcloud.com/article/153-what-is-the-difference-between-taxcloud-starter-and-premium-plans"
+    confidence: B
+  state_upcharges:
+    - state: "CO"
+      reason: "Home rule cities require additional local filings"
+      additional_cost: null
+      source: "https://support.taxcloud.com"
+    - state: "LA"
+      reason: "Parish-level filing complexity"
+      additional_cost: null
+      source: "https://support.taxcloud.com"
+  volume_discounts:
+    - threshold_filings_per_month: null
+      discounted_rate: 20
+      source: "https://taxcloud.com/alternatives/taxcloud-vs-taxjar/"
+  # Tiered annual filing pricing, verified 2026-05-12 from internal pricing
+  # table. Each tier is an all-in annual price for the filing count. Calculator
+  # walks this ladder (smallest tier whose `filings` >= billable_filings) and
+  # ignores per-filing math when this is present.
+  tier_pricing:
+    - filings: 12
+      annual_price: 399
+      source: "https://taxcloud.com/taxcloud-pricing/"
+      confidence: A
+    - filings: 36
+      annual_price: 1099
+      source: "https://taxcloud.com/taxcloud-pricing/"
+      confidence: A
+    - filings: 60
+      annual_price: 1799
+      source: "https://taxcloud.com/taxcloud-pricing/"
+      confidence: A
+    - filings: 120
+      annual_price: 3499
+      source: "https://taxcloud.com/taxcloud-pricing/"
+      confidence: A
+    - filings: 180
+      annual_price: 5099
+      source: "https://taxcloud.com/taxcloud-pricing/"
+      confidence: A
+    - filings: 240
+      annual_price: 6499
+      source: "https://taxcloud.com/taxcloud-pricing/"
+      confidence: A
+    - filings: 320
+      annual_price: 8399
+      source: "https://taxcloud.com/taxcloud-pricing/"
+      confidence: A
+    - filings: 400
+      annual_price: 9499
+      source: "https://taxcloud.com/taxcloud-pricing/"
+      confidence: A
+    - filings: 600
+      annual_price: 11999
+      source: "https://taxcloud.com/taxcloud-pricing/"
+      confidence: A
+  notes: "Filing service is priced as a tiered annual subscription, not per-filing × volume. Each tier covers up to its filing count for one all-in annual fee. Effective per-filing cost declines from ~$33 at the 12-filings tier to $20 at the 600-filings tier. CO and LA carry additional costs due to home-rule and parish-level complexity. SST member state filings are free for eligible Premium customers (SST-enrolled, no physical nexus in that state)."
+
+registrations:
+  has_per_registration_fee: true
+  base_cost:
+    amount: 249
+    source: "https://taxcloud.com/taxcloud-pricing/"
+    confidence: A
+  includes_state_fees: false
+  notes: "Non-SST state registrations: $249 per state (TaxCloud service fee). SST member state registrations are free under TaxCloud's CSP enrollment. State permit/registration fees charged by the state itself are passed through and not modeled here."
+
+transaction_fees:
+  has_transaction_fee: false
+  model: null
+  rate: null
+  rate_unit: null
+  applies_to: null
+  notes: "No per-transaction fees. Cost scales with order tier (subscription) and filing count, not transaction dollar volume or basis points."
+
+add_ons:
+  implementation_fee:
+    has_fee: false
+    amount: 0
+    source: "https://taxcloud.com/taxcloud-pricing/"
+    confidence: A
+  vda_pricing:
+    has_service: true
+    base_cost: null
+    per_state: true
+    source: "https://taxcloud.com"
+    confidence: B
+  backfile_pricing:
+    has_service: true
+    base_cost: null
+    per_return: true
+    source: "https://taxcloud.com"
+    confidence: B
+  audit_support:
+    included_in_plan: "Premium"
+    additional_cost: null
+    hours_included: 8
+    source: "https://taxcloud.com/alternatives/taxcloud-vs-yonda-tax/"
+  api_access_fee:
+    is_separate_charge: false
+    cost: null
+    source: "https://taxcloud.com/taxcloud-pricing/"
+  payment_method_fees:
+    credit_card_surcharge_pct: 7
+    source: "https://taxcloud.com/taxcloud-pricing/"
+  other_fees:
+    - name: "Guided onboarding (optional)"
+      cost: null
+      description: "1-on-1 guided onboarding available for an additional fee."
+      source: "https://taxcloud.com/taxcloud-pricing/"
+
+sst:
+  is_csp: true
+  sst_member_states_covered_free: 24
+  eligibility_requirements: "Available on Starter or Premium. Customer must be enrolled in SST and have no physical nexus in the SST member state. Free benefit covers calculation, filing, remittance, exemption certificate processing, and remote-seller registration."
+  filings_covered_under_csp: true
+  source: "https://www.streamlinedsalestax.org"
+
+international:
+  supports_vat: false
+  supports_gst: false
+  countries_covered: 0
+  pricing_model_international: "US-only on the core TaxCloud platform. The Ziptax acquisition (July 2025) provides an API-first rates product but does not extend full filing/remittance internationally."
+  source: "https://taxcloud.com"
+
+discounts:
+  annual_billing_discount_pct: 16
+  multi_year_discount_available: false
+  startup_program: false
+  notes: "~16% effective annual prepay discount across all order tiers (e.g., Premium 100-orders monthly $79/mo × 12 = $948 vs $799 annual = 15.7% off). Free 30-day trial provides access to Premium plan features."
+
+commitments:
+  contract_length_options:
+    - month_to_month
+    - annual
+  cancellation_terms: "Standard SaaS terms; no early termination penalties on month-to-month."
+  free_trial:
+    has_trial: true
+    length_days: 30
+    plan_during_trial: "Premium"
+    credit_card_required: false
+  source: "https://taxcloud.com/taxcloud-pricing/"
+
+sources:
+  - url: "https://taxcloud.com/taxcloud-pricing/"
+    title: "TaxCloud Pricing"
+    accessed_date: 2026-05-11
+    confidence: A
+    fields_supported:
+      - plans
+      - monthly_price
+      - free_trial
+      - credit_card_surcharge
+  - url: "https://support.taxcloud.com/article/153-what-is-the-difference-between-taxcloud-starter-and-premium-plans"
+    title: "Difference between Starter and Premium, TaxCloud Help Center"
+    accessed_date: 2026-05-11
+    confidence: B
+    fields_supported:
+      - filings.base_cost
+      - features
+      - sst_program_access
+  - url: "https://support.taxcloud.com/article/176-what-is-the-difference-between-free-plan-starter-plan"
+    title: "Free Plan vs Starter Plan, TaxCloud Help Center"
+    accessed_date: 2026-05-11
+    confidence: B
+    fields_supported:
+      - free_plan
+      - starter_plan
+
+change_log:
+  - date: 2026-05-12
+    change_type: structure_change
+    description: "Captured full TaxCloud pricing ladders from internal pricing table. Subscription: 9-tier Starter ($199-$6,299/yr) and 9-tier Premium ($799-$12,999/yr) covering 100-40,000 monthly orders. Filings: 9-tier annual subscription ($399 at 12 filings/yr through $11,999 at 600 filings/yr) replacing the per-filing × volume model. Annual prepay discount corrected from ~10% to ~16% across all tiers. Per-filing rate ($39 base) retained as informational; calculator now uses tier_pricing when present."
+    source: "https://taxcloud.com/taxcloud-pricing/"
+
+calculator:
+  applicable_inputs:
+    - monthly_orders
+    - states_filing
+    - states_physical_nexus
+    - filing_frequency
+    - registration_backlog
+    - integration_type
+  cost_formula_notes: |
+    1. Pick plan: Free (home state only), Starter (multi-state, no API), or Premium (API + SST benefits)
+    2. Compute subscription: monthly_price * 12, apply 10% annual discount if applicable
+    3. Compute SST-eligible filings (Premium only): states with no physical nexus that are SST members
+    4. Filing cost = (total_filings - sst_free_filings) * $39 (volume discounts toward $20 at scale)
+    5. Registrations modeled as $0 (TaxCloud absorbs SST state registrations; non-SST state fees passthrough)
+    6. Total annual = subscription + filings + 0 (registrations)
+  output_caveat: "Filings are priced as a tiered annual subscription (not per-filing × volume). SST CSP credit eliminates the per-filing cost in up to 24 SST member states where the customer has economic nexus only (no physical presence)."
+
+notes: |
+  First-party data; high confidence across all numeric fields.
+  
+  Open research items:
+  - Capture full order-tier ladder beyond entry tier for Starter ($19/100 orders) and Premium ($79/200 orders)
+  - Document specific CO and LA filing upcharges
+  - Document volume discount thresholds: at what filing count does per-filing drop from $39 toward $20?
+  - VDA and backfile pricing specifics

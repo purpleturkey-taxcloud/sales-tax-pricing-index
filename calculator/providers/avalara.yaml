@@ -1,0 +1,527 @@
+# =============================================================================
+# Avalara, populated example following schema.yaml v1.0
+# Last full verification: 2026-05-11
+# Researcher: TaxCloud GTM (initial draft)
+#
+# Why Avalara is the second example:
+# - Opposite end of the transparency spectrum from TaxJar, stress-tests the
+#   schema's opaque-vendor handling, range types, and confidence ratings.
+# - Multi-product structure (AvaTax + Returns + CertCapture + Registration +
+#   License Guidance + 1099) reveals where the schema bends. See notes at
+#   bottom for schema v2 recommendations.
+# - #1 displacement target for TaxCloud GTM, so accuracy and citation quality
+#   matter more here than for any other competitor.
+#
+# DATA POSTURE
+# Avalara publishes pricing for only a narrow set of low-touch products
+# (License Guidance, Sales Tax Registration, 1099 & W-9). The core platform
+# AvaTax, Returns, CertCapture, and ERP connectors, is quote-only. Every
+# price below for core products is sourced from Vendr buyer data, checkthat.ai,
+# G2 / TrustRadius / Capterra reports, and Reddit invoices. These are
+# confidence C–E and MUST be displayed as ranges with disclosed methodology.
+# =============================================================================
+
+provider:
+  name: "Avalara"
+  slug: "avalara"
+  legal_name: "Avalara, Inc."
+  parent_company: "Vista Equity Partners"  # Taken private by Vista in 2022; reportedly planning IPO
+  hq_location: "Durham, North Carolina, USA"
+  founded_year: 2004
+  primary_url: "https://www.avalara.com"
+  pricing_url: "https://www.avalara.com/us/en/products/pricing.html"
+  help_center_url: "https://help.avalara.com"
+  target_icp: "Mid-market to enterprise; broad horizontal coverage across ecommerce, manufacturing, retail, SaaS"
+  primary_verticals:
+    - enterprise
+    - ecommerce
+    - b2b
+    - saas
+  competitive_position: "Market incumbent (founded 2004, ~30,000 customers). Broadest integration catalog. Quote-based, sales-led GTM. Frequently criticized in reviews for opaque pricing, costly overages, and slow support."
+
+transparency:
+  tier: opaque
+  rationale: "Core platform (AvaTax, Returns, CertCapture) is quote-only with no published list pricing. Only narrow ancillary products (License Guidance, Sales Tax Registration, 1099 & W-9) have public per-unit pricing. Multiple third-party sources confirm pricing is custom and varies materially by customer."
+  pricing_page_has_dollar_amounts: true   # Yes, but only for low-touch products, not core
+  quote_required_for_core_product: true
+  publishes_filing_fees: false
+  publishes_registration_fees: true       # $403/state is published
+  publishes_overage_rates: false
+  publishes_implementation_fees: false
+
+pricing_model:
+  primary: custom_quote
+  scales_with:
+    - transactions
+    - states
+    - filings
+    - jurisdictions
+    - seats
+  predictability_score: 1
+  predictability_notes: "Pricing is custom-quoted per customer based on monthly transaction volume, jurisdiction count, product mix, integration complexity, and contract length. Vendr data shows the same nominal transaction tier can produce contract values varying by 2-3x across customers. Overage charges and ERP connector fees are common sources of unbudgeted cost. Multi-year and multi-product commitments yield material discounts but lock customers in."
+
+# -----------------------------------------------------------------------------
+# Plans
+#
+# SCHEMA NOTE: Avalara does not have "plans" in the TaxJar sense. It has
+# multiple separately purchaseable products (AvaTax, Returns, CertCapture,
+# Registration, License Guidance, 1099). For v1, we model each product as a
+# "plan" entry. Buyer segments (small / mid-market / enterprise) are captured
+# as order_tiers within AvaTax since that's where the contract value sits.
+# For v2 of the schema, recommend splitting `products` from `plans` so a
+# provider can have multiple products each with multiple plans.
+# -----------------------------------------------------------------------------
+plans:
+  - name: "AvaTax (core tax calculation engine)"
+    slug: "avatax"
+    tagline: "Core sales tax calculation across 13,000+ U.S. jurisdictions; quote-based"
+    target_customer: "Any business with multi-state nexus; pricing scales with monthly transaction volume"
+    is_free: false
+    is_quote_only: true
+    
+    monthly_price:
+      amount: null
+      type: range
+      range_min: 617          # ~$7,400/yr mid-market floor / 12 (checkthat.ai)
+      range_max: 5833         # ~$70,000/yr enterprise ceiling / 12 (checkthat.ai)
+      source: "https://checkthat.ai/brands/avalara/pricing"
+      source_date: 2026-05-11
+      confidence: C
+    
+    annual_price:
+      amount: null
+      discount_pct_vs_monthly: null
+      source: "https://checkthat.ai/brands/avalara/pricing"
+      source_date: 2026-05-11
+      confidence: C
+    
+    # Buyer-segment "tiers", these are NOT Avalara's named plans (Avalara
+    # has no named plans for AvaTax). They reflect typical contract ranges
+    # by buyer revenue size, sourced from aggregator buyer data.
+    order_tiers:
+      - included_orders: 6000  # ~500/mo * 12, small business floor
+        monthly_price: 617
+        annual_price: 7400
+        api_calls_included: null
+        source: "https://checkthat.ai/brands/avalara/pricing"
+        confidence: C
+      - included_orders: 30000  # ~2,500/mo, typical mid-market
+        monthly_price: 1500
+        annual_price: 18000
+        api_calls_included: null
+        source: "https://www.getsphere.com/blog/how-much-does-avalara-cost"
+        confidence: D
+      - included_orders: 120000  # ~10,000/mo, upper mid-market / lower enterprise
+        monthly_price: 3500
+        annual_price: 42000
+        api_calls_included: null
+        source: "https://checkthat.ai/brands/avalara/pricing"
+        confidence: C
+      - included_orders: null    # Enterprise, fully custom
+        monthly_price: null
+        annual_price: null
+        api_calls_included: null
+        source: "https://www.vendr.com/marketplace/avalara"
+        confidence: C
+    
+    overage:
+      model: per_unit
+      per_unit_cost: null         # Per-transaction overage rate not publicly disclosed
+      description: "Per-transaction fees apply when monthly volume exceeds contracted tier. Rate is custom-negotiated and not publicly disclosed. Vendr buyer reports describe overage as a frequent source of unbudgeted cost, customers report being pushed into renegotiation rather than paying overage fees long-term."
+    
+    included_filings_per_period:
+      count: 0                    # AvaTax does NOT include filings; Returns is a separate product
+      period: none
+    included_integrations: null   # ERP connectors charged separately
+    included_states: null
+    api_access_included: true     # API is core to AvaTax
+    
+    features:
+      nexus_monitoring: true
+      exemption_certificate_mgmt: false  # CertCapture is a separate product
+      multi_state_filing: false          # Returns is a separate product
+      audit_support: false               # Add-on
+      phone_support: true                # Quality varies by tier
+      dedicated_csm: true                # Enterprise-tier contracts
+      sst_program_access: true           # Avalara is an SST CSP
+      vda_support: true                  # Add-on service
+      international_vat_gst: true        # Separate product set
+
+  - name: "Avalara Returns (filing and remittance)"
+    slug: "returns"
+    tagline: "Automated sales tax return preparation, filing, and remittance"
+    target_customer: "AvaTax customers with multi-state filing obligations"
+    is_free: false
+    is_quote_only: true
+    
+    monthly_price:
+      amount: null
+      type: range
+      range_min: null             # Per-return pricing model, not subscription
+      range_max: null
+      source: "https://checkthat.ai/brands/avalara/pricing"
+      source_date: 2026-05-11
+      confidence: C
+    
+    annual_price:
+      amount: null
+      discount_pct_vs_monthly: null
+      source: ""
+      source_date: 2026-05-11
+      confidence: G
+    
+    order_tiers: []               # Priced per-return, not per-order
+    
+    overage:
+      model: per_unit
+      per_unit_cost: null
+      description: "Returns is typically priced per-filing with a base subscription fee. Per-filing fees publicly reported at $42-$54 per return (checkthat.ai). Combined cost depends on filing frequency and state count."
+    
+    included_filings_per_period:
+      count: null
+      period: monthly
+    included_integrations: null
+    included_states: null
+    api_access_included: false
+    
+    features:
+      nexus_monitoring: false
+      exemption_certificate_mgmt: false
+      multi_state_filing: true
+      audit_support: false
+      phone_support: true
+      dedicated_csm: false
+      sst_program_access: true
+      vda_support: false
+      international_vat_gst: false
+
+  - name: "Avalara 1099 & W-9"
+    slug: "1099-w9"
+    tagline: "1099 and W-9 management with publicly tiered pricing"
+    target_customer: "Any business with 1099 reporting obligations"
+    is_free: false
+    is_quote_only: false          # Notably, the ONLY Avalara product with published tier pricing
+    
+    monthly_price:
+      amount: null
+      type: range
+      range_min: null
+      range_max: null
+      source: "https://checkthat.ai/brands/avalara/pricing"
+      source_date: 2026-05-11
+      confidence: C
+    
+    annual_price:
+      amount: null
+      discount_pct_vs_monthly: null
+      source: ""
+      source_date: 2026-05-11
+      confidence: C
+    
+    # 1099 product has Individual / Professional / Enterprise tiers
+    # publicly priced; need to capture specific dollar amounts from
+    # pricing page. Currently null pending direct page snapshot.
+    order_tiers: []
+    
+    overage:
+      model: per_unit
+      per_unit_cost: null
+      description: "Per-1099 pricing within each tier; specifics on pricing page"
+    
+    included_filings_per_period:
+      count: null
+      period: annual
+    included_integrations: null
+    included_states: null
+    api_access_included: false
+    
+    features:
+      nexus_monitoring: false
+      exemption_certificate_mgmt: false
+      multi_state_filing: false
+      audit_support: false
+      phone_support: true
+      dedicated_csm: false
+      sst_program_access: false
+      vda_support: false
+      international_vat_gst: false
+
+# -----------------------------------------------------------------------------
+# Filings
+# -----------------------------------------------------------------------------
+filings:
+  has_per_filing_fee: true
+  base_cost:
+    amount: 48                    # Midpoint of reported $42-$54 range
+    source: "https://checkthat.ai/brands/avalara/pricing"
+    confidence: C
+  
+  state_upcharges: []             # Not publicly broken out; likely exists for CO/LA
+  
+  volume_discounts: []
+  
+  notes: "Per-filing pricing reported in $42-$54 range from aggregator buyer data. Backfiling reported at $1,500/return in some customer cases (TrustRadius review)."
+
+# -----------------------------------------------------------------------------
+# Registrations
+# -----------------------------------------------------------------------------
+registrations:
+  has_per_registration_fee: true
+  base_cost:
+    amount: 403                   # Published list price
+    source: "https://www.avalara.com/us/en/products/pricing.html"
+    confidence: A
+  includes_state_fees: false      # Customer pays state permit fees separately; verify
+  notes: "$403/location is one of Avalara's only public list prices. checkthat.ai reports range of $349-$403 across deal types, suggesting negotiation possible. License Guidance product available at $119 as a precursor to registration."
+
+# -----------------------------------------------------------------------------
+# Transaction fees
+# -----------------------------------------------------------------------------
+transaction_fees:
+  has_transaction_fee: true       # Effectively, via overage on contracted tier
+  model: tiered
+  rate: null
+  rate_unit: usd_per_txn
+  applies_to: all_transactions
+  notes: "Per-transaction overage rates apply when monthly volume exceeds contracted tier. Specific rates not publicly disclosed and vary by customer."
+
+# -----------------------------------------------------------------------------
+# Add-ons
+# -----------------------------------------------------------------------------
+add_ons:
+  implementation_fee:
+    has_fee: true
+    amount: null
+    range_min: 2500               # Customer-reported low end
+    range_max: 50000              # Enterprise implementations
+    source: "https://www.vendr.com/marketplace/avalara"
+    confidence: C
+  
+  vda_pricing:
+    has_service: true
+    base_cost: null
+    per_state: true
+    source: "https://help.avalara.com"
+    confidence: B
+  
+  backfile_pricing:
+    has_service: true
+    base_cost: 1500               # Single customer-reported figure; treat as anecdotal
+    per_return: true
+    source: "https://www.trustradius.com/products/avalara/pricing"
+    confidence: E
+  
+  audit_support:
+    included_in_plan: null
+    additional_cost: null
+    hours_included: null
+    source: "https://www.avalara.com"
+  
+  api_access_fee:
+    is_separate_charge: false     # Bundled into AvaTax
+    cost: null
+    source: ""
+  
+  payment_method_fees:
+    credit_card_surcharge_pct: null
+    source: ""
+  
+  other_fees:
+    - name: "ERP connector fees"
+      cost: null
+      description: "Connectors for SAP, Oracle, NetSuite, and other enterprise ERPs priced separately from AvaTax. Many maintained by third parties, not Avalara directly. Per Vendr data, ERP connectors are a major source of contract expansion."
+      source: "https://www.vendr.com/marketplace/avalara"
+    - name: "License Guidance"
+      cost: 119
+      description: "Pre-registration product that identifies required licenses; one of the only published list prices on Avalara's pricing page."
+      source: "https://www.avalara.com/us/en/products/pricing.html"
+    - name: "Premium features add-ons"
+      cost: null
+      description: "Advanced reporting, multi-company management, custom integrations priced separately per Vendr buyer data."
+      source: "https://www.vendr.com/marketplace/avalara"
+    - name: "Early termination fees"
+      cost: null
+      description: "Multi-year contracts reportedly carry early termination penalties; specific terms vary by contract."
+      source: "https://www.getsphere.com/blog/leading-sales-tax-compliance-software-in-the-us"
+
+# -----------------------------------------------------------------------------
+# SST
+# -----------------------------------------------------------------------------
+sst:
+  is_csp: true
+  sst_member_states_covered_free: null   # Verify, Avalara IS a CSP but customer experience differs
+  eligibility_requirements: "Customer must enroll in SST and meet eligibility (no physical nexus in SST state for free filings)."
+  filings_covered_under_csp: true
+  source: "https://www.streamlinedsalestax.org"
+
+# -----------------------------------------------------------------------------
+# International
+# -----------------------------------------------------------------------------
+international:
+  supports_vat: true
+  supports_gst: true
+  countries_covered: null         # Avalara supports global VAT but country count unverified
+  pricing_model_international: "Separate product set (Avalara Cross-Border, Avalara VAT Returns); priced separately from US sales tax products."
+  source: "https://www.avalara.com"
+
+# -----------------------------------------------------------------------------
+# Discounts and commitments
+# -----------------------------------------------------------------------------
+discounts:
+  annual_billing_discount_pct: null
+  multi_year_discount_available: true
+  startup_program: false
+  notes: "Per Vendr data, customers see meaningful discount for multi-year commitments and multi-product bundling (AvaTax + Returns + CertCapture). Single-year, single-product contracts are at list pricing."
+
+commitments:
+  contract_length_options:
+    - annual
+    - multi_year                  # 2-3 year contracts common per Vendr
+  cancellation_terms: "Annual or multi-year contracts with early termination penalties; specific terms vary. Cancellation reportedly difficult, with customers reporting auto-renewal traps."
+  free_trial:
+    has_trial: false              # Avalara is sales-led; no self-serve trial for core products
+    length_days: null
+    plan_during_trial: null
+    credit_card_required: null
+  source: "https://www.avalara.com"
+
+# -----------------------------------------------------------------------------
+# Sources
+# -----------------------------------------------------------------------------
+sources:
+  - url: "https://www.avalara.com/us/en/products/pricing.html"
+    title: "Avalara Pricing Information"
+    accessed_date: 2026-05-11
+    confidence: A
+    fields_supported:
+      - registrations.base_cost
+      - add_ons.other_fees (License Guidance)
+  
+  - url: "https://checkthat.ai/brands/avalara/pricing"
+    title: "Avalara Pricing 2026: Plans, Costs & Hidden Fees"
+    accessed_date: 2026-05-11
+    confidence: C
+    fields_supported:
+      - plans.avatax (range estimates)
+      - filings.base_cost
+      - mid-market and enterprise ranges
+  
+  - url: "https://www.vendr.com/marketplace/avalara"
+    title: "Avalara Software Pricing & Plans 2026: See Your Cost"
+    accessed_date: 2026-05-11
+    confidence: C
+    fields_supported:
+      - implementation_fee
+      - multi_year_discount
+      - ERP_connector_fees
+      - overage_structure
+  
+  - url: "https://www.getsphere.com/blog/how-much-does-avalara-cost"
+    title: "How Much Does Avalara Cost? Full Pricing Breakdown"
+    accessed_date: 2026-05-11
+    confidence: D                 # Competitor-sourced (Sphere); use for corroboration
+    fields_supported:
+      - mid_market_avatax_estimate
+      - hidden_fee_context
+  
+  - url: "https://www.galvix.com/article/avalara-pricing-cost/"
+    title: "Avalara Pricing: How Much Does It Cost in 2026"
+    accessed_date: 2026-05-11
+    confidence: D                 # Competitor-sourced (Galvix)
+    fields_supported:
+      - registration_context
+      - ERP_connector_context
+  
+  - url: "https://www.trustradius.com/products/avalara/pricing"
+    title: "Avalara Pricing 2026, TrustRadius"
+    accessed_date: 2026-05-11
+    confidence: C
+    fields_supported:
+      - customer_quotes
+      - backfile_pricing (anecdotal)
+
+change_log:
+  # Avalara doesn't publish pricing changes; capture material business events
+  # that affect pricing posture instead.
+  - date: 2022-10-19
+    change_type: structure_change
+    description: "Avalara taken private by Vista Equity Partners for $8.4B. Subsequent customer reports suggest pricing posture has tightened, with more aggressive renewal increases and less negotiation flexibility."
+    source: "https://www.avalara.com/us/en/about/news.html"
+
+calculator:
+  applicable_inputs:
+    - monthly_orders
+    - states_filing
+    - states_physical_nexus
+    - filing_frequency
+    - registration_backlog
+    - integration_type
+    - annual_revenue        # Buyer segment determination
+  
+  cost_formula_notes: |
+    Avalara cannot be calculated to a point estimate, only to a range.
+    
+    1. Determine buyer segment from annual_revenue:
+       - small business (<$1M): AvaTax base ~$617-$1,500/mo
+       - mid-market ($1M-$50M): AvaTax base ~$1,500-$3,500/mo
+       - enterprise ($50M+): AvaTax base $3,500-$6,000+/mo (custom)
+    2. Add Returns module: typically 30-50% of AvaTax base
+    3. Add per-filing cost: states_filing * filing_frequency_per_year * $48 (midpoint of reported range)
+    4. Add registration cost: registration_backlog * $403
+    5. Add ERP connector fees if integration_type in [SAP, Oracle, NetSuite, Dynamics]: $2,000-$15,000/yr
+    6. Add implementation fee (one-time): $2,500-$50,000 by segment
+    7. Output a range: low estimate to high estimate based on negotiation outcomes
+    
+    NEVER display a point estimate. Always show the range with the methodology link.
+  
+  output_caveat: "Avalara does not publish pricing for its core platform. Estimates above are based on buyer-reported data from Vendr, checkthat.ai, and customer reviews on G2/TrustRadius. Actual quote will vary based on transaction volume, contract length, product bundling, and negotiation. Multi-year commitments yield material discounts. Request a quote from Avalara for an accurate price."
+
+# -----------------------------------------------------------------------------
+# Notes
+# -----------------------------------------------------------------------------
+notes: |
+  Schema stress-test findings (recommended v2 schema improvements):
+  
+  1. PLANS vs PRODUCTS, Avalara has multiple products (AvaTax, Returns, CertCapture,
+     Registration, 1099, Cross-Border) each with its own pricing structure. The current
+     schema treats each as a "plan" entry but this conflates product selection with tier
+     selection. Recommend v2: split `products` (array) from `plans` (array within product)
+     so a provider can have N products each with M plans.
+  
+  2. RANGE TYPES are working as designed. The `range_min`/`range_max` pattern handles
+     opaque vendors cleanly. The calculator should never collapse a range to a point.
+  
+  3. BUNDLING is not currently modeled. Avalara customers typically buy AvaTax + Returns
+     bundled at a discount. The schema cannot express "Returns is 50% off when bought with
+     AvaTax." Recommend v2: add a `bundles` array with bundle composition and pricing.
+  
+  4. CONTRACT-DEPENDENT PRICING, multi-year, multi-product, and volume-commit discounts
+     are material for Avalara but not captured beyond a boolean. Recommend v2: structured
+     discount schema with commit_length, commit_volume, commit_products, discount_pct.
+  
+  5. OVERAGE STRUCTURE, Avalara's overage isn't a fixed per-unit rate, it's a negotiation
+     trigger. The schema's `overage.model: per_unit` is close but the reality is "overage
+     is the company's lever to push you into a higher tier or longer contract." Capture
+     this qualitatively in `description`.
+  
+  Competitive positioning notes for /vs/avalara landing page:
+  - Lead with the transparency contrast. Avalara's opacity is its biggest reputational
+    weakness; TaxCloud's published pricing is the cleanest visual contrast in the market.
+  - The change_log entry on Vista Equity acquisition is good AEO content, "Has Avalara
+    pricing changed since being taken private?" is a query worth ranking for.
+  - Backfile pricing reports of $1,500/return are striking enough to feature in social
+    content even though they're confidence E (single TrustRadius customer report).
+  - ERP connector fees and implementation fees are major drivers of total cost that
+    customers consistently underbudget, surface these on the comparison page.
+  - Avalara IS an SST CSP, which neutralizes one TaxCloud differentiator. Lean instead
+    on transparency, customer support quality (per G2/Shopify App Store reviews), and
+    predictable pricing.
+  
+  Open research questions for human review:
+  - Full 1099 & W-9 tier pricing (Individual / Professional / Enterprise dollar amounts)
+  - Specific overage per-transaction rates by tier
+  - SST CSP free-filing experience for Avalara customers, does the discount actually
+    flow through to invoice, or is it absorbed in base pricing?
+  - Confirm whether $403 registration includes state permit fees
+  - Specific ERP connector pricing for SAP, NetSuite, Oracle, Dynamics
+  - International VAT / Cross-Border product pricing structure

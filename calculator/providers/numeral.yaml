@@ -1,0 +1,388 @@
+# =============================================================================
+# Numeral, populated example following schema.yaml v1.0
+# Last full verification: 2026-05-11
+# Researcher: TaxCloud GTM (initial draft)
+#
+# Why Numeral is the third example:
+# - Tests partial transparency (Free + Standard published, Pro custom)
+# - Tests pure per-event pricing (no subscription fee on Standard)
+# - Tests "Free tier as ongoing product" (not a trial)
+# - Direct competitor to TaxCloud in mid-market ecommerce/SaaS
+# =============================================================================
+
+provider:
+  name: "Numeral"
+  slug: "numeral"
+  legal_name: "Numeral Two, Inc."
+  parent_company: null
+  hq_location: "San Francisco, California, USA"
+  founded_year: 2023
+  primary_url: "https://www.numeral.com"
+  pricing_url: "https://www.numeral.com/pricing"
+  help_center_url: "https://intercom.help/numeralhq/en"
+  target_icp: "Mid-market ecommerce and SaaS; strong fit for Shopify, Stripe, Chargebee native businesses; international expansion via 70+ country VAT/GST coverage"
+  primary_verticals:
+    - ecommerce
+    - saas
+  competitive_position: "Y Combinator-backed (W23); $35M Series B led by Mayfield Sept 2025 at $350M valuation. Positioned as AI-native modern alternative to legacy tax software. Per-event pricing transparency on lower tier; custom on Pro. Trusted by 2,500+ brands including Eight Sleep, Ridge, Graza, Manus."
+
+transparency:
+  tier: partial
+  rationale: "Free tier and Standard plan have fully published per-event pricing ($75/filing, $150/registration). Pro plan is custom-quoted with no published pricing. Third-party reports suggest Pro pricing structured as % of revenue + fixed fee for non-standard integrations."
+  pricing_page_has_dollar_amounts: true
+  quote_required_for_core_product: false  # Standard plan is self-serve and fully priced
+  publishes_filing_fees: true
+  publishes_registration_fees: true
+  publishes_overage_rates: false  # Pure per-event, no overage concept
+  publishes_implementation_fees: false
+
+pricing_model:
+  primary: per_filing
+  scales_with:
+    - filings
+    - states
+  predictability_score: 5  # Standard plan; Pro drops to 2
+  predictability_notes: "Standard plan is fully predictable, exact cost = (filings * $75) + (registrations * $150). Free tier has no cost. Pro tier predictability drops because the model is custom and may include revenue-based components."
+
+plans:
+  - name: "Free (Monitoring)"
+    slug: "free"
+    tagline: "Base plan: nexus monitoring and exposure auditing"
+    target_customer: "Pre-compliance businesses wanting visibility before committing to paid filing"
+    is_free: true
+    is_quote_only: false
+    
+    monthly_price:
+      amount: 0
+      type: exact
+      range_min: null
+      range_max: null
+      source: "https://www.numeral.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    
+    annual_price:
+      amount: 0
+      discount_pct_vs_monthly: null
+      source: "https://www.numeral.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    
+    order_tiers: []
+    
+    overage:
+      model: none
+      per_unit_cost: null
+      description: "No paid usage at this tier. Customer must upgrade to Standard to file or register."
+    
+    included_filings_per_period:
+      count: 0
+      period: none
+    included_integrations: null  # Includes Shopify, Stripe, Amazon, Walmart per page
+    included_states: null
+    api_access_included: false
+    
+    features:
+      nexus_monitoring: true
+      exemption_certificate_mgmt: false
+      multi_state_filing: false
+      audit_support: false  # Historical exposure audit is included
+      phone_support: false
+      dedicated_csm: false
+      sst_program_access: false
+      vda_support: false
+      international_vat_gst: false
+
+  - name: "Standard"
+    slug: "standard"
+    tagline: "Per-event pricing for filing and registration. No subscription fee."
+    target_customer: "Established and growing businesses needing on-demand filing without subscription commitment"
+    is_free: false
+    is_quote_only: false
+    
+    monthly_price:
+      amount: 0  # No subscription fee, pay only for filings and registrations
+      type: exact
+      range_min: null
+      range_max: null
+      source: "https://www.numeral.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    
+    annual_price:
+      amount: 0
+      discount_pct_vs_monthly: null
+      source: "https://www.numeral.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    
+    order_tiers: []  # Not order-based
+    
+    overage:
+      model: none
+      per_unit_cost: null
+      description: "No tier or overage concept, every filing and every registration billed per-event."
+    
+    included_filings_per_period:
+      count: 0
+      period: none
+    included_integrations: null  # All standard integrations: Shopify, Stripe, Chargebee, QuickBooks, NetSuite
+    included_states: null
+    api_access_included: false
+    
+    features:
+      nexus_monitoring: true
+      exemption_certificate_mgmt: false  # Available, but moves to Pro for advanced (50+ certs)
+      multi_state_filing: true
+      audit_support: false
+      phone_support: false  # White-glove via chat/email per page
+      dedicated_csm: false
+      sst_program_access: false
+      vda_support: false  # VDA support is Pro-tier
+      international_vat_gst: false
+
+  - name: "Pro"
+    slug: "pro"
+    tagline: "End-to-end platform with advanced features and integrations"
+    target_customer: "Larger businesses needing API access, VDA support, exemption certificate management, or international coverage"
+    is_free: false
+    is_quote_only: true
+    
+    monthly_price:
+      amount: null
+      type: range
+      range_min: null
+      range_max: null
+      source: "https://www.numeral.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    
+    annual_price:
+      amount: null
+      discount_pct_vs_monthly: null
+      source: "https://www.numeral.com/pricing"
+      source_date: 2026-05-11
+      confidence: A
+    
+    order_tiers: []
+    
+    overage:
+      model: none
+      per_unit_cost: null
+      description: "Custom pricing, third-party reports describe a fixed fee + % of revenue structure for non-standard integrations (ERP-dependent customers). Per-filing rate appears to remain at $75 within Pro per Galvix reporting."
+    
+    included_filings_per_period:
+      count: null
+      period: none
+    included_integrations: null
+    included_states: null
+    api_access_included: true
+    
+    features:
+      nexus_monitoring: true
+      exemption_certificate_mgmt: true
+      multi_state_filing: true
+      audit_support: false
+      phone_support: true  # "Access to our sales tax experts" per pricing page
+      dedicated_csm: false
+      sst_program_access: false  # Numeral is not SST CSP
+      vda_support: true
+      international_vat_gst: true  # 70+ countries
+
+filings:
+  has_per_filing_fee: true
+  base_cost:
+    amount: 75
+    source: "https://www.numeral.com/pricing"
+    confidence: A
+  
+  state_upcharges: []  # Not publicly broken out; verify CO/LA handling
+  
+  volume_discounts: []  # No published volume discount on Standard; volume-based discount mentioned on Pro tier features at Kintsugi but not Numeral
+  
+  notes: "$75 per filing flat on Standard plan. Per Galvix reporting, Pro plan retains $75 per filing rate. Filing covered under Numeral Guarantee, penalties and interest paid by Numeral if filed late."
+
+registrations:
+  has_per_registration_fee: true
+  base_cost:
+    amount: 150
+    source: "https://www.numeral.com/pricing"
+    confidence: A
+  includes_state_fees: false  # Per pricing page FAQ: 'few states require a registration fee'; state fees passed through
+  notes: "$150 per state registration on Standard plan. Most states' permit fees are free per Numeral FAQ; some states charge a state-level fee passed through to customer."
+
+transaction_fees:
+  has_transaction_fee: false
+  model: null
+  rate: null
+  rate_unit: null
+  applies_to: null
+  notes: "Numeral does not charge per-transaction fees on Standard plan. Pro plan custom pricing may include revenue-based components per third-party reporting (unverified)."
+
+add_ons:
+  implementation_fee:
+    has_fee: false
+    amount: null
+    range_min: null
+    range_max: null
+    source: "https://www.numeral.com/pricing"
+    confidence: A
+  
+  vda_pricing:
+    has_service: true
+    base_cost: null  # Pro-tier feature; specific cost not published
+    per_state: true
+    source: "https://www.numeral.com/pricing"
+    confidence: A
+  
+  backfile_pricing:
+    has_service: true
+    base_cost: null
+    per_return: true
+    source: "https://www.numeral.com/pricing"
+    confidence: A
+  
+  audit_support:
+    included_in_plan: null  # Customer-facing reviews indicate audit handling is limited
+    additional_cost: null
+    hours_included: null
+    source: "https://www.galvix.com/article/numeral-pricing/"
+  
+  api_access_fee:
+    is_separate_charge: true  # API access is gated to Pro plan
+    cost: null  # Not separately priced; included in Pro
+    source: "https://www.numeral.com/pricing"
+  
+  payment_method_fees:
+    credit_card_surcharge_pct: null
+    source: ""
+  
+  other_fees:
+    - name: "Exemption certificate management (50+ certificates)"
+      cost: null
+      description: "First 50 certificates free; custom plans for 50+. Specific pricing not published."
+      source: "https://www.numeral.com/pricing"
+
+sst:
+  is_csp: false
+  sst_member_states_covered_free: 0
+  eligibility_requirements: "N/A, Numeral is not an SST Certified Service Provider. Customers filing in SST member states pay the full $75/return."
+  filings_covered_under_csp: false
+  source: "https://www.galvix.com/article/numeral-pricing/"
+
+international:
+  supports_vat: true
+  supports_gst: true
+  countries_covered: 70  # "70+ countries" per pricing page Pro tier
+  pricing_model_international: "International coverage is Pro-tier only. Specific per-country pricing not published."
+  source: "https://www.numeral.com/pricing"
+
+discounts:
+  annual_billing_discount_pct: null  # No annual prepay discount published
+  multi_year_discount_available: false
+  startup_program: false
+  notes: "No long-term contract required per pricing page. Customers pay month to month based on filings and registrations completed."
+
+commitments:
+  contract_length_options:
+    - month_to_month
+  cancellation_terms: "No long-term contract. Clients pay month to month when filing taxes and/or registering."
+  free_trial:
+    has_trial: false
+    length_days: null
+    plan_during_trial: null
+    credit_card_required: null
+  source: "https://www.numeral.com/pricing"
+
+sources:
+  - url: "https://www.numeral.com/pricing"
+    title: "Numeral Pricing: Compare Prices by Plan"
+    accessed_date: 2026-05-11
+    confidence: A
+    fields_supported:
+      - plans
+      - filings.base_cost
+      - registrations.base_cost
+      - international
+      - commitments
+  
+  - url: "https://www.galvix.com/article/numeral-pricing/"
+    title: "Numeral Pricing in 2026: What It Actually Costs and Whether There Is a Better Option"
+    accessed_date: 2026-05-11
+    confidence: D  # Competitor-sourced (Galvix); use for corroboration
+    fields_supported:
+      - pro_plan_revenue_share_context
+      - sst_non_certification
+      - per_state_compounding_effect
+  
+  - url: "https://techcrunch.com/2025/09/18/numeral-raises-35m-to-automate-sales-tax-with-ai/"
+    title: "Numeral raises $35M to automate sales tax with AI"
+    accessed_date: 2026-05-11
+    confidence: C
+    fields_supported:
+      - funding_history
+      - customer_count_2000_plus
+
+change_log:
+  - date: 2025-09-18
+    change_type: structure_change
+    description: "Series B $35M raise led by Mayfield at $350M valuation. No direct pricing change reported but expansion capital signals potential repricing or new product introduction."
+    source: "https://techcrunch.com/2025/09/18/numeral-raises-35m-to-automate-sales-tax-with-ai/"
+
+calculator:
+  applicable_inputs:
+    - states_filing
+    - filing_frequency
+    - registration_backlog
+    - annual_revenue  # For Pro tier estimation only
+    - integration_type  # ERP integration pushes to Pro
+  
+  cost_formula_notes: |
+    For Free plan: Total cost = 0
+    
+    For Standard plan:
+    1. Filings per year = states_filing * filing_frequency_per_year
+    2. Filing cost = filings_per_year * $75
+    3. Registration cost = registration_backlog * $150
+    4. Total annual = filing_cost + registration_cost
+    
+    For Pro plan: Cannot compute to point estimate.
+    Display range: Standard pricing + uplift for Pro features.
+    Reports suggest Pro adds fixed fee + potential % of revenue for ERP-integrated customers.
+  
+  output_caveat: "Standard plan pricing is exact per Numeral's published pricing page. Pro plan requires a custom quote and may include revenue-based components for non-standard integrations."
+
+notes: |
+  Competitive intelligence for /vs/numeral landing page:
+  
+  - The Per-State Compounding Effect is the headline. At $75/filing, a business filing monthly
+    in 15 states pays $1,125/month in filing fees alone. TaxCloud's SST coverage in 24 states
+    eliminates filing cost for eligible customers, this is the most important narrative on
+    the comparison page.
+  - Numeral is NOT SST certified. Full $75/return applies in all SST states. Galvix calculates
+    that a business filing monthly in 10 SST states pays $750/month that a certified provider
+    would eliminate entirely.
+  - Per-event pricing is simple at low volume; it becomes a tax on scaling. The /vs/numeral
+    page should show a side-by-side cost curve: TaxCloud's order-volume + low filing fee
+    structure beats Numeral on multi-state, high-filing-frequency profiles.
+  - Pro plan opacity is a vulnerability. Customers reviewing alternatives don't know what
+    they'll pay if they need exemption certs, API access, or VDAs. Lean into TaxCloud's
+    transparent inclusion of ECM and API on Premium.
+  - Customer support quality is mixed per G2 and Shopify App Store. Some 1-star reviews
+    cite late filings and slow response times. Counter with TaxCloud U.S.-based support
+    and 2-hour SLA.
+  
+  Schema observations from this provider:
+  - Pure per-event pricing handled fine by setting monthly_price to 0 and using
+    filings.base_cost and registrations.base_cost as the primary cost drivers.
+  - Free tier (not trial) is captured cleanly with is_free=true and zero pricing.
+  - "Pro plan opacity within a partially transparent provider" is captured via the
+    is_quote_only=true flag on a specific plan rather than the whole provider.
+  
+  Open research questions:
+  - Specific Pro plan pricing structure: confirm whether it's fixed fee, % of revenue,
+    or hybrid. Reach out to former Numeral Pro customers via Sybill transcripts or
+    LinkedIn DMs.
+  - Exemption certificate management pricing for 50+ certificates
+  - Whether international VAT/GST has per-country filing fees on top of the Pro base
+  - SLA terms, Galvix mentions Pro plan has SLA agreements but specifics not public
