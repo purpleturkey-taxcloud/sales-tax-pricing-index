@@ -1,7 +1,6 @@
 import type { Config } from 'tailwindcss';
 
-// Modern SaaS direction — Stripe/Linear/Vercel aesthetic.
-// Bright neutrals, sans-serif throughout, indigo accent, rounded corners,
+// Bright neutrals, sans-serif throughout, deep-teal accent, rounded corners,
 // subtle shadows.
 const config: Config = {
   content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
@@ -20,11 +19,11 @@ const config: Config = {
           sunken: '#f8fafc',    // slate-50
         },
         rule: '#e2e8f0',        // slate-200
-        // Accent — indigo, used confidently in CTAs and key affordances
+        // Accent — deep teal, used confidently in CTAs and key affordances
         accent: {
-          DEFAULT: '#4f46e5',   // indigo-600
-          hover: '#4338ca',     // indigo-700
-          subtle: '#eef2ff',    // indigo-50
+          DEFAULT: '#0f766e',   // teal-700
+          hover: '#115e59',     // teal-800
+          subtle: '#f0fdfa',    // teal-50
         },
       },
       fontFamily: {
