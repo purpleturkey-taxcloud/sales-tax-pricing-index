@@ -11,8 +11,8 @@ import { IntegrationSelect } from './inputs/integration-select';
 import { SstStateGrid } from './inputs/sst-state-grid';
 import { ProviderCard } from './provider-card';
 
-const REVENUE_STOPS = [500_000, 1_000_000, 5_000_000, 25_000_000, 100_000_000, 500_000_000];
-const ORDER_STOPS = [1_000, 5_000, 25_000, 100_000, 250_000, 1_000_000, 5_000_000];
+const REVENUE_STOPS = [0, 500_000, 1_000_000, 5_000_000, 25_000_000, 100_000_000, 500_000_000];
+const ORDER_STOPS = [0, 1_000, 5_000, 25_000, 100_000, 250_000, 1_000_000, 5_000_000];
 
 // Form-visible inputs. The other UserInputs fields are filled with sensible
 // defaults below (annual billing, monthly cadence, no special requirements).
@@ -25,19 +25,17 @@ interface FormState {
   registrationBacklog: number;
 }
 
+// Land in a zero state: every quantity starts empty so the buyer builds up
+// their own scenario. integrationType has no "none" option and doesn't affect
+// cost while volumes are zero, so it keeps a default selection.
 const INITIAL_FORM: FormState = {
   integrationType: 'shopify',
-  annualFilings: 200,
-  annualOrders: 250_000,
-  annualRevenueUSD: 25_000_000,
-  statesFiling: 20,
+  annualFilings: 0,
+  annualOrders: 0,
+  annualRevenueUSD: 0,
+  statesFiling: 0,
   registrationBacklog: 0,
 };
-
-// Pre-select 10 SST states so the default view reflects a realistic mid-market
-// buyer rather than a never-selected-SST baseline. Matches the Mid-Market
-// scenario on comparison pages.
-const INITIAL_SST_STATES = ['AR', 'GA', 'IN', 'IA', 'KS', 'KY', 'MI', 'MN', 'NE', 'NV'] as const;
 
 function formatShortMoney(v: number): string {
   if (v >= 1_000_000) return `$${v / 1_000_000}M`;
@@ -91,7 +89,7 @@ function buildUserInputs(form: FormState, sstCount: number): UserInputs {
 
 export function CalculatorForm({ providersJson }: { providersJson: Record<string, ProviderData> }) {
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
-  const [sstStates, setSstStates] = useState<Set<string>>(() => new Set(INITIAL_SST_STATES));
+  const [sstStates, setSstStates] = useState<Set<string>>(() => new Set());
 
   const providersMap = useMemo(() => new Map(Object.entries(providersJson)), [providersJson]);
   const effectiveInputs = useMemo<UserInputs>(
